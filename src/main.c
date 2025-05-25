@@ -28,15 +28,15 @@ void ler_input(int tecla[4]) {
     }
 }
 
-void processar_input(int *teclas, int *x, int *y, int *rot, int *bRotateHold, MAPA *t, int tipo) {
-    if (teclas[0] && pode_encaixar(t, tipo, *rot, *x + 1, *y)) (*x)++;
-    if (teclas[1] && pode_encaixar(t, tipo, *rot, *x - 1, *y)) (*x)--;
-    if (teclas[2] && pode_encaixar(t, tipo, *rot, *x, *y + 1)) {
+void processar_input(int *teclas, int *x, int *y, int *rot, int *bRotateHold, MAPA *t, int peca_atual) {
+    if (teclas[0] && pode_encaixar(t, peca_atual, *rot, *x + 1, *y)) (*x)++;
+    if (teclas[1] && pode_encaixar(t, peca_atual, *rot, *x - 1, *y)) (*x)--;
+    if (teclas[2] && pode_encaixar(t, peca_atual, *rot, *x, *y + 1)) {
         (*y)++;
         timerUpdateTimer(500);
     }
     if (teclas[3]) {
-        if (*bRotateHold && pode_encaixar(t, tipo, *rot + 1, *x, *y))
+        if (*bRotateHold && pode_encaixar(t, peca_atual, *rot + 1, *x, *y))
             (*rot)++;
         *bRotateHold = 0;
     } else {
@@ -44,8 +44,8 @@ void processar_input(int *teclas, int *x, int *y, int *rot, int *bRotateHold, MA
     }
 }
 
-int verificar_game_over(MAPA *t, int tipo, int rot, int x, int y) {
-    return !pode_encaixar(t, tipo, rot, x, y);
+int verificar_game_over(MAPA *t, int peca_atual, int rot, int x, int y) {
+    return !pode_encaixar(t, peca_atual, rot, x, y);
 }
 
 void inicializar_jogo(MAPA *t) {
@@ -118,31 +118,38 @@ int main() {
 
                 int pontuacao = 0, fim_jogo = 0, velocidade = 1000;
                 int teclas[4] = {0}, bRotateHold = 1;
-                int tipo = rand() % 9, rot = 0;
+
+                //int peca_atual = rand() % 9;
+                int  rot = 0;
                 int x = LARGURA_JOGO / 2 - 2, y = 0;
                 int acumulador_linhas = 0;
                 int nivel_atual = 1;
 
+                int peca_proxima = sortear_proxima_peca();
+                int peca_atual = peca_proxima;
+                peca_proxima = sortear_proxima_peca();
+
+
                 exibir_pontuacao(&pontuacao);
                 exibir_linhas_removidas(acumulador_linhas);
-                exibir_prox_peca(tipo);
+                exibir_prox_peca(peca_proxima);
                 exibir_nivel(nivel_atual);
 
                 while (!fim_jogo) {
                     int cair = timerTimeOver();
                     ler_input(teclas);
-                    processar_input(teclas, &x, &y, &rot, &bRotateHold, &t, tipo);
+                    processar_input(teclas, &x, &y, &rot, &bRotateHold, &t, peca_atual);
 
-                    if (cair && pode_encaixar(&t, tipo, rot, x, y + 1)) {
+                    if (cair && pode_encaixar(&t, peca_atual, rot, x, y + 1)) {
                         y++;
                         timerUpdateTimer(velocidade);
-                    } else if (!pode_encaixar(&t, tipo, rot, x, y + 1)) {
-                        posicionar_tetramino_no_mapa(&t, tipo, rot, x, y);
+                    } else if (!pode_encaixar(&t, peca_atual, rot, x, y + 1)) {
+                        posicionar_tetramino_no_mapa(&t, peca_atual, rot, x, y);
 
                         // chamada do som da peça fixada
                         if (audio->som_peca) Mix_PlayChannel(-1, audio->som_peca, 0);
 
-                        if (tipo == 8) {  // chamada da muisca de explosao
+                        if (peca_atual == 8) {  // chamada da muisca de explosao
                             if (audio->som_explosao) Mix_PlayChannel(-1, audio->som_explosao, 0);
 
                             screenSetColor(RED, BLACK);
@@ -166,15 +173,17 @@ int main() {
                         }
                         nivel_atual = novo_nivel;
 
-                        atualizar_pontuacao(&pontuacao, linhas, (tipo == 8));
+                        atualizar_pontuacao(&pontuacao, linhas, (peca_atual == 8));
                         exibir_pontuacao(&pontuacao);
 
-                        tipo = rand() % 9;
+                        peca_atual = peca_proxima;
+                        peca_proxima = sortear_proxima_peca();
+                        //peca_atual = rand() % 9;
                         rot = 0;
                         x = LARGURA_JOGO / 2 - 2;
                         y = 0;
 
-                        if (verificar_game_over(&t, tipo, rot, x, y)) {
+                        if (verificar_game_over(&t, peca_atual, rot, x, y)) {
                             fim_jogo = 1;
                             if (audio->musica_gameover) {
                                 Mix_PlayMusic(audio->musica_gameover, 1);
@@ -185,8 +194,8 @@ int main() {
                         }
                     }
 
-                    desenhar_mapa_com_peca(&t, tipo, rot, x, y);
-                    exibir_prox_peca(tipo);
+                    desenhar_mapa_com_peca(&t, peca_atual, rot, x, y);
+                    exibir_prox_peca(peca_proxima);
                     screenUpdate();
                     usleep(50000);
                 }
@@ -199,7 +208,7 @@ int main() {
                 }
                 free(t.matriz);
 
-                // Return to main Tetris music after game over
+                // chamada da musica tetris de novo apos o game over
                 if (audio->musica_tetris != NULL) {
                     Mix_PlayMusic(audio->musica_tetris, -1);
                 }
@@ -212,7 +221,7 @@ int main() {
                     screenClear();
                     dimensoes_tela_inicio_fim();
                     exibir_ranking();
-                    
+                
                     char op = getchar();
                     while (getchar() != '\n');
                     
@@ -220,6 +229,7 @@ int main() {
                         sair_ranking = 1;
                     }
                 }
+                //screenClear();
                 break;
             }
 

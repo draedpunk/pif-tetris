@@ -18,17 +18,7 @@ Tetramino tetraminos[9];
 
 Tetramino tetraminos[9];
 
-// char letras_aleatorias_tetraminos() {
-    
-//     return 'A' + (rand() % 26);
-// }
-
 void carregar_tetraminos() {
-    // static int sorteou = 0;
-    // if (!sorteou) {
-    //     srand(time(NULL));
-    //     sorteou = 1;
-    // }
 
     tetraminos[0] = (Tetramino){ // I
         .forma = "...."
@@ -98,7 +88,7 @@ void carregar_tetraminos() {
                  ".XXX"
                  "..X."
                  "....",
-        .cor = RED,
+        .cor = LIGHTMAGENTA,
         .simbolo = '#'
     };
 
@@ -107,7 +97,7 @@ void carregar_tetraminos() {
                  ".XXX"
                  "..X."
                  "....", 
-        .cor = WHITE,
+        .cor = RED,
         .simbolo = '@'
     };
 }
@@ -177,18 +167,22 @@ int pode_encaixar(MAPA* mapa, int tipo, int rot, int posX, int posY) {
 }
 
 void explodir(MAPA* t, int cx, int cy) {
-    for (int y = -1; y <= 1; y++) {
-        for (int x = -1; x <= 1; x++) {
+    for (int y = -2; y <= 2; y++) {
+        for (int x = -2; x <= 2; x++) {
             int px = cx + x;
             int py = cy + y;
+
             if (px >= 0 && px < LARGURA_JOGO && py >= 0 && py < ALTURA_JOGO) {
-                t->matriz[py][px].caracter = ' ';
-                t->matriz[py][px].cor = WHITE;
+                // Não explode se for parede
+                if (t->matriz[py][px].caracter != PAREDE && t->matriz[py][px].caracter != BASE) {
+                    t->matriz[py][px].caracter = ' ';
+                    t->matriz[py][px].cor = RED;
+                }
             }
         }
     }
-
 }
+
 
 int remover_linhas_completas(MAPA *t) {
     int linhas_removidas = 0;
@@ -222,13 +216,18 @@ int remover_linhas_completas(MAPA *t) {
     return linhas_removidas;
 }
 
+int sortear_proxima_peca() {
+    return rand() % 9;
+}
+
+
 void exibir_prox_peca(int proxima_peca) {
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 12);
     printf("+---Proxima--+");
 
     for (int y = 0; y < 4; y++) {
         screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 13 + y);
-        printf("|    "); 
+        printf("|    ");
 
         for (int x = 0; x < 4; x++) {
             int pi = rotacionar(x, y, 0);
@@ -241,12 +240,13 @@ void exibir_prox_peca(int proxima_peca) {
             }
         }
 
-        printf("    |"); 
+        printf("    |");
     }
 
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 17);
     printf("+------------+");
 }
+
 
 void exibir_linhas_removidas(int total_linhas_remov) {
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 8);
