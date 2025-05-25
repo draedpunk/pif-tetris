@@ -10,46 +10,43 @@
 #include "tetris.h"
 #include "ui.h"
 
-void banner_titulo(){
-    int bannerX = (80 - 53) / 2;
-    int bannerY = (24 - 6) / 2;
+void banner_titulo() {
+    int largura_util = 68;
+    int altura_util = 22;
+    int bannerX = (largura_util - 29) / 2 + 2;
+    int bannerY = (altura_util - 5) / 2 + 2;
 
     screenGotoxy(bannerX, bannerY);
-    printf(" _____ ______  _____  _____ ______  _____  _____ ");
+    printf(" ___  ___  ___  ___  _  ___ ");
     screenGotoxy(bannerX, bannerY + 1);
-    printf("|_   _|| ___ \\|  ___||_   _|| ___ \\|_   _|/  ___|");
+    printf("|_ _|| __>|_ _|| . \\| |/ __>");
     screenGotoxy(bannerX, bannerY + 2);
-    printf("  | |  | |_/ /| |__    | |  | |_/ /  | |  \\ `--. ");
+    printf(" | | | _>  | | |   /| |\\__ \\");
     screenGotoxy(bannerX, bannerY + 3);
-    printf("  | |  |    / |  __|   | |  |    /   | |   `--. \\");
+    printf(" |_| |___> |_| |_\\_\\|_|<___/");
     screenGotoxy(bannerX, bannerY + 4);
-    printf("  | |  | |\\ \\ | |___   | |  | |\\ \\  _| |_ /\\__/ /");
-    screenGotoxy(bannerX, bannerY + 5);
-    printf("  \\_/  \\_| \\_|\\____/   \\_/  \\_| \\_| \\___/ \\____/ ");
+    printf("                             ");
 }
 
 void banner_gameover() {
-    int bannerX = (80 - 59) / 2;
-    int bannerY = (24 - 6) / 2;
-
+    int largura_util = 68;
+    int altura_util = 22;
+    int bannerX = (largura_util - 43) / 2 + 2;
+    int bannerY = (altura_util - 4) / 2 + 2;
+    
     screenGotoxy(bannerX, bannerY);
-    printf(" _____   ___  ___  ___ _____   _____  _   _  _____ ______ ");
+    printf(" ___   ___  __ __  ___   ___  _ _  ___  ___ ");
     screenGotoxy(bannerX, bannerY + 1);
-    printf("|  __ \\ / _ \\ |  \\/  ||  ___| |  _  || | | ||  ___|| ___ \\");
+    printf("/  _> | . ||  \\  \\| __> | . || | || __>| . \\");
     screenGotoxy(bannerX, bannerY + 2);
-    printf("| |  \\// /_\\ \\| .  . || |__   | | | || | | || |__  | |_/ /");
+    printf("| <_/\\|   ||     || _>  | | || ' || _> |   /");
     screenGotoxy(bannerX, bannerY + 3);
-    printf("| | __ |  _  || |\\/| ||  __|  | | | || | | ||  __| |    / ");
-    screenGotoxy(bannerX, bannerY + 4);
-    printf("| |_\\ \\| | | || |  | || |___  \\ \\_/ /\\ \\_/ /| |___ | |\\ \\ ");
-    screenGotoxy(bannerX, bannerY + 5);
-    printf(" \\____/\\_| |_/\\_|  |_/\\____/   \\___/  \\___/ \\____/ \\_| \\_|");
+    printf("\\____/|_|_||_|_|_||___> \\___/|__/ |___>|_\\_\\");
 }
 
 void exibir_banner_titulo() {
     screenInit(1);
     dimensoes_tela_inicio_fim();
-    //centralizar_area_terminal(65,10);
     banner_titulo();
     screenUpdate();
     sleep(3);
@@ -59,7 +56,6 @@ void exibir_banner_titulo() {
 void exibir_banner_gameover() {
     screenInit(1);
     dimensoes_tela_inicio_fim();
-    // centralizar_area_terminal(65,10);
     banner_gameover();
     screenUpdate();
     sleep(3);
@@ -108,7 +104,7 @@ void bordas_personalizadas(int min_x, int max_x, int min_y,int max_y) {
 
 void dimensoes_tela_inicio_fim() {
 
-    bordas_personalizadas(1, 80,1, 25);
+    bordas_personalizadas(2, 70,2, 24);
 }
 
 void dimensoes_tela_jogo() {

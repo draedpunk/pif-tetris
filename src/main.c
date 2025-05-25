@@ -59,19 +59,47 @@ void inicializar_jogo(MAPA *t){
     timerInit(500);
 }
 
+int subir_nivel(int nivel_atual, int acumulador_linhas, int *velocidade) {
+    int novo_nivel = acumulador_linhas/ 5 + 1;
+
+    if (novo_nivel > nivel_atual) {
+        *velocidade = (*velocidade > 100) ? *velocidade - 100 : 100;
+    }
+
+    return novo_nivel;
+}
+
+
+void exibir_nivel(int nivel_atual){
+    screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 4);
+    printf("+---Nivel----+");
+
+    screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 5);
+    printf("|            |");
+
+    screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 6);
+    printf("+------------+");
+
+    screenGotoxy(INICIO_X + LARGURA_JOGO + 9, INICIO_Y + 5);
+    printf("%4d", nivel_atual);
+}
+
+
 int main() {
     MAPA t;
     inicializar_jogo(&t);
 
-    int pontuacao = 0, fim_jogo = 0, velocidade = 500;
+    int pontuacao = 0, fim_jogo = 0, velocidade = 1000;
     int teclas[4] = {0}, bRotateHold = 1;
     int tipo = rand() % 9, rot = 0;
     int x = LARGURA_JOGO / 2 - 2, y = 0;
     int acumulador_linhas =0;
+    int nivel_atual =1;
 
     exibir_pontuacao(&pontuacao);
     exibir_linhas_removidas(acumulador_linhas);
     exibir_prox_peca(tipo);
+    exibir_nivel(nivel_atual);
 
 
     while (!fim_jogo) {
@@ -83,6 +111,7 @@ int main() {
         if (cair && pode_encaixar(&t, tipo, rot, x, y + 1)) {
             y++;
             timerUpdateTimer(velocidade);
+
         } else if (!pode_encaixar(&t, tipo, rot, x, y + 1)) {
             posicionar_tetramino_no_mapa(&t, tipo, rot, x, y);
 
@@ -93,7 +122,11 @@ int main() {
             int linhas = remover_linhas_completas(&t);
             acumulador_linhas += linhas;
             exibir_linhas_removidas(acumulador_linhas);
-            
+
+            nivel_atual = subir_nivel(nivel_atual, acumulador_linhas, &velocidade);
+            exibir_nivel(nivel_atual);
+
+
             atualizar_pontuacao(&pontuacao, linhas, (tipo == 8));
             exibir_pontuacao(&pontuacao);
 

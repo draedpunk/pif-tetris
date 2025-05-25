@@ -102,17 +102,17 @@ void exibir_ranking(){
 }
 
 void exibir_pontuacao(int *pontuacao){
-    screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y +14);
+    screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 0);
     printf("+---Pontos---+");
 
-    for(int i =0; i<1; i++){
-        screenGotoxy(INICIO_X + LARGURA_JOGO +6, INICIO_Y +15);
-        printf("|            |");
-    }
-    screenGotoxy(INICIO_X + LARGURA_JOGO +6, INICIO_Y + 16);
+    screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 1);
+    printf("|            |");
+
+    screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 2);
     printf("+------------+");
 
-    screenGotoxy(INICIO_X+LARGURA_JOGO +9, INICIO_Y + 15);
+    screenGotoxy(INICIO_X + LARGURA_JOGO + 9, INICIO_Y + 1);
     printf("%4d", *pontuacao);
 }
+
 

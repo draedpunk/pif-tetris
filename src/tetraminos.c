@@ -155,11 +155,11 @@ int remover_linhas_completas(MAPA *t) {
 }
 
 void exibir_prox_peca(int proxima_peca) {
-    screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y);
+    screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 12);
     printf("+---Proxima--+");
 
     for (int y = 0; y < 4; y++) {
-        screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y +1 + y);
+        screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 13 + y);
         printf("|    ");  // esquerda
 
         for (int x = 0; x < 4; x++) {
@@ -167,25 +167,27 @@ void exibir_prox_peca(int proxima_peca) {
             printf("%c", bloco != '.' ? bloco : ' ');
         }
 
-        printf("    |");  //direita
+        printf("    |");  // direita
     }
-    screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 4);
+
+    screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 17);
     printf("+------------+");
 }
 
 void exibir_linhas_removidas(int total_linhas_remov) {
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 8);
     printf("+---Linhas---+");
-    for (int i = 0; i < 1; i++) {
-        screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 9 + i);
-        printf("|            |");
-    }
+
+    screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 9);
+    printf("|            |");
+
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 10);
     printf("+------------+");
 
     screenGotoxy(INICIO_X + LARGURA_JOGO + 9, INICIO_Y + 9);
     printf("%4d", total_linhas_remov);
 }
+
 
 
 
