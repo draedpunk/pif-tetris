@@ -86,6 +86,10 @@ void exibir_nivel(int nivel_atual){
 
 
 int main() {
+    char nome_jogadr[30];
+    input_nome_jogador(nome_jogadr);
+
+
     MAPA t;
     inicializar_jogo(&t);
 
@@ -148,6 +152,7 @@ int main() {
         screenUpdate();
         usleep(50000);
     }
+    salvar_pontuacao(nome_jogadr, pontuacao);
 
     screenDestroy();
     for (int i = 0; i < t.linhas; i++) {

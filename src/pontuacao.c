@@ -28,9 +28,32 @@ void atualizar_pontuacao(int *pontuacao, int linhas, int eh_explosiva) {
     }
 }
 
+void salvar_pontuacao(const char *nome, int pontuacao) {
+    FILE *arquivo = fopen("./assets/ranking.txt", "a");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para salvar pontuação.\n");
+        return;
+    }
+
+    fprintf(arquivo, "%s | %d\n", nome, pontuacao);
+    fclose(arquivo);
+}
+
+
+void input_nome_jogador(char *nome_jogador) {
+    screenClear();
+    screenGotoxy(SCRSTARTX + 29, SCRSTARTY + 10);
+    printf("Informe seu nome: ");
+
+    screenGotoxy(SCRSTARTX + 29, SCRSTARTY + 11);
+    scanf(" %25[^\n]", nome_jogador);
+
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
 
 void receber_dados_pontuacao(Jogador pontos[], int *qtd_dados){
-    FILE *arquivo_pontos = fopen("./assets/ascii-arts", "r");
+    FILE *arquivo_pontos = fopen("./assets/ascii-arts/ranking.txt", "r");
     if (arquivo_pontos == NULL){
         printf("erro ao abrir arquivo.\n");
         return;
@@ -62,6 +85,7 @@ void colocar_ordem_cresc(Jogador pontos[], int qtd_dados){
         }
     }
 }
+
 
 void exibir_ranking(){
     Jogador pontos[LIMITE_JOGADORES];
