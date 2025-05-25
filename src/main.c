@@ -47,16 +47,14 @@ int verificar_game_over(MAPA *t, int tipo, int rot, int x, int y) {
     return !pode_encaixar(t, tipo, rot, x, y);
 }
 
-void inicializar_jogo(MAPA *t){
-    ler_mapa(t); 
+void inicializar_jogo(MAPA *t) {
+    ler_mapa(t);
     srand(time(NULL));
     carregar_tetraminos();
-
-    exibir_banner_titulo();
     screenInit(1);
     dimensoes_tela_jogo();
-    
     timerInit(500);
+    exibir_banner_titulo();
 }
 
 int subir_nivel(int nivel_atual, int acumulador_linhas, int *velocidade) {
@@ -84,81 +82,103 @@ void exibir_nivel(int nivel_atual){
     printf("%4d", nivel_atual);
 }
 
-
 int main() {
-    dimensoes_tela_inicio_fim();
-    char nome_jogadr[30];
-    input_nome_jogador(nome_jogadr);
-
-
+    char nome[30];
     MAPA t;
-    inicializar_jogo(&t);
+    int opcao;
 
-    int pontuacao = 0, fim_jogo = 0, velocidade = 1000;
-    int teclas[4] = {0}, bRotateHold = 1;
-    int tipo = rand() % 9, rot = 0;
-    int x = LARGURA_JOGO / 2 - 2, y = 0;
-    int acumulador_linhas =0;
-    int nivel_atual =1;
+    while (1) {
+        dimensoes_tela_inicio_fim();
+        banner_titulo();
+        screenHideCursor();
+        opcao = getchar();
+        //screenHideCursor();
 
-    exibir_pontuacao(&pontuacao);
-    exibir_linhas_removidas(acumulador_linhas);
-    exibir_prox_peca(tipo);
-    exibir_nivel(nivel_atual);
+        while (getchar() != '\n');
 
+        switch (opcao) {
+            case '1':
+                
+                input_nome_jogador(nome);
+                inicializar_jogo(&t);
 
-    while (!fim_jogo) {
+                // a partir daqui, tudo dentro da main:
+                screenClear();
+                int pontuacao = 0, fim_jogo = 0, velocidade = 1000;
+                int teclas[4] = {0}, bRotateHold = 1;
+                int tipo = rand() % 9, rot = 0;
+                int x = LARGURA_JOGO / 2 - 2, y = 0;
+                int acumulador_linhas = 0;
+                int nivel_atual = 1;
 
-        int cair = timerTimeOver();
-        ler_input(teclas);
-        processar_input(teclas, &x, &y, &rot, &bRotateHold, &t, tipo);
+                exibir_pontuacao(&pontuacao);
+                exibir_linhas_removidas(acumulador_linhas);
+                exibir_prox_peca(tipo);
+                exibir_nivel(nivel_atual);
 
-        if (cair && pode_encaixar(&t, tipo, rot, x, y + 1)) {
-            y++;
-            timerUpdateTimer(velocidade);
+                while (!fim_jogo) {
+                    int cair = timerTimeOver();
+                    ler_input(teclas);
+                    processar_input(teclas, &x, &y, &rot, &bRotateHold, &t, tipo);
 
-        } else if (!pode_encaixar(&t, tipo, rot, x, y + 1)) {
-            posicionar_tetramino_no_mapa(&t, tipo, rot, x, y);
+                    if (cair && pode_encaixar(&t, tipo, rot, x, y + 1)) {
+                        y++;
+                        timerUpdateTimer(velocidade);
+                    } else if (!pode_encaixar(&t, tipo, rot, x, y + 1)) {
+                        posicionar_tetramino_no_mapa(&t, tipo, rot, x, y);
 
-            if (tipo == 8) {
-                explodir(&t, x + 1, y + 1);
-            }
+                        if (tipo == 8)
+                            explodir(&t, x + 1, y + 1);
 
-            int linhas = remover_linhas_completas(&t);
-            acumulador_linhas += linhas;
-            exibir_linhas_removidas(acumulador_linhas);
+                        int linhas = remover_linhas_completas(&t);
+                        acumulador_linhas += linhas;
+                        exibir_linhas_removidas(acumulador_linhas);
 
-            nivel_atual = subir_nivel(nivel_atual, acumulador_linhas, &velocidade);
-            exibir_nivel(nivel_atual);
+                        nivel_atual = subir_nivel(nivel_atual, acumulador_linhas, &velocidade);
+                        exibir_nivel(nivel_atual);
 
+                        atualizar_pontuacao(&pontuacao, linhas, (tipo == 8));
+                        exibir_pontuacao(&pontuacao);
 
-            atualizar_pontuacao(&pontuacao, linhas, (tipo == 8));
-            exibir_pontuacao(&pontuacao);
+                        tipo = rand() % 9;
+                        rot = 0;
+                        x = LARGURA_JOGO / 2 - 2;
+                        y = 0;
 
-            tipo = rand() % 9;
-            rot = 0;
-            x = LARGURA_JOGO / 2 - 2;
-            y = 0;
+                        if (verificar_game_over(&t, tipo, rot, x, y)) {
+                            fim_jogo = 1;
+                            screenGotoxy(INICIO_X, INICIO_Y + t.linhas / 2);
+                            exibir_banner_gameover();
+                        }
+                    }
 
-            if (verificar_game_over(&t, tipo, rot, x, y)) {
-                fim_jogo = 1;
-                screenGotoxy(INICIO_X, INICIO_Y + t.linhas / 2);
-                exibir_banner_gameover();
-            }
+                    desenhar_mapa_com_peca(&t, tipo, rot, x, y);
+                    exibir_prox_peca(tipo);
+                    screenUpdate();
+                    usleep(50000);
+                }
+
+                salvar_pontuacao(nome, pontuacao);
+
+                screenDestroy();
+                for (int i = 0; i < t.linhas; i++)
+                    free(t.matriz[i]);
+                free(t.matriz);
+                break;
+
+            case '2':
+                exibir_ranking();
+                break;
+
+            case '3':
+                screenGotoxy(25, 18);
+                printf("Saindo... Até logo!\n");
+                return 0;
+
+            default:
+                screenGotoxy(25, 18);
+                printf("Opcao invalida! Tente novamente.\n");
+                sleep(1);
         }
-
-        desenhar_mapa_com_peca(&t, tipo, rot, x, y);
-
-        exibir_prox_peca(tipo);
-        screenUpdate();
-        usleep(50000);
     }
-    salvar_pontuacao(nome_jogadr, pontuacao);
-
-    screenDestroy();
-    for (int i = 0; i < t.linhas; i++) {
-        free(t.matriz[i]);
-    }
-    free(t.matriz);
-    return 0;
 }

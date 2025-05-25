@@ -26,6 +26,16 @@ void banner_titulo() {
     printf(" |_| |___> |_| |_\\_\\|_|<___/");
     screenGotoxy(bannerX, bannerY + 4);
     printf("                             ");
+
+    screenGotoxy(26, 16);
+    printf("Selecione uma opcao: ");
+    screenGotoxy(26, 17);
+    printf("[1] INICIAR JOGO");
+    screenGotoxy(26, 18);
+    printf("[2] VER RANKING");
+    screenGotoxy(26, 19);
+    printf("[3] SAIR");
+
 }
 
 void banner_gameover() {
@@ -33,7 +43,7 @@ void banner_gameover() {
     int altura_util = 22;
     int bannerX = (largura_util - 43) / 2 + 2;
     int bannerY = (altura_util - 4) / 2 + 2;
-    
+
     screenGotoxy(bannerX, bannerY);
     printf(" ___   ___  __ __  ___   ___  _ _  ___  ___ ");
     screenGotoxy(bannerX, bannerY + 1);
