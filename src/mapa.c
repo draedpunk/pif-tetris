@@ -11,12 +11,13 @@
 #include "tetraminos.h"
 
 void alocar_mapa(MAPA* t) {
-    t->matriz = malloc(t->linhas * sizeof(char*));
+    t->matriz = malloc(t->linhas * sizeof(Grade_jogo*));
 
     for (int i = 0; i < t->linhas; i++) {
-        t->matriz[i] = malloc((t->colunas + 1) * sizeof(char));
-        for (int j = 0; j < t->colunas + 1; j++) {
-            t->matriz[i][j] = 0;
+        t->matriz[i] = malloc(t->colunas * sizeof(Grade_jogo));
+        for (int j = 0; j < t->colunas; j++) {
+            t->matriz[i][j].caracter = ' ';  
+            t->matriz[i][j].cor = MAGENTA; 
         }
     }
 }
@@ -61,53 +62,53 @@ void ler_mapa(MAPA *t) {
     t->colunas = colunas;
     alocar_mapa(t); 
 
-    for (int i = 0; i < linhas; i++) {
-        strcpy(t->matriz[i], temp[i]);
+    for (int i = 0; i < t->linhas; i++) {
+        for (int j = 0; j < t->colunas; j++) {
+            t->matriz[i][j].caracter = temp[i][j];
+            t->matriz[i][j].cor = (temp[i][j] == ' ') ? DEFAULT_COLOR : RED;
+        }
     }
-
 }
 
 void imprimir_mapa(MAPA* t) {
     for (int i = 0; i < t->linhas; i++) {
-
-        screenGotoxy(INICIO_X, INICIO_Y + i);
-
         for (int j = 0; j < t->colunas; j++) {
-            printf("%c", t->matriz[i][j]);
-        }
-    } 
-}
-
-void desenhar_mapa_com_peca(MAPA* t, int tetramino_atual, int rotacao_atual, int x_atual, int y_atual) {
-    for (int y = 0; y < t->linhas; y++) {
-        for (int x = 0; x < t->colunas; x++) {
-            screenGotoxy(INICIO_X + x, INICIO_Y + y);
-
-            int caractere_peca = 0;
-
-            int rel_x = x - x_atual;
-            int rel_y = y - y_atual;
-            if (rel_x >= 0 && rel_x < 4 && rel_y >= 0 && rel_y < 4) {
-                int pi = rotacionar(rel_x, rel_y, rotacao_atual);
-                if (tetraminos[tetramino_atual][pi] != '.') {
-                    caractere_peca = 1;
-                }
-            }
-
-            if (caractere_peca) {
-                printf("%c", 'A' + tetramino_atual);
-            } else {
-                printf("%c", t->matriz[y][x]);
-            }
+            printf("%c", t->matriz[i][j].caracter); 
         }
         printf("\n");
     }
 }
 
+void desenhar_mapa_com_peca(MAPA* t, int tetramino_atual, int rotacao_atual, int x_atual, int y_atual) {
+    Tetramino atual = tetraminos[tetramino_atual];
+    
+    for (int y = 0; y < t->linhas; y++) {
+        for (int x = 0; x < t->colunas; x++) {
+            screenGotoxy(INICIO_X + x, INICIO_Y + y);
+            
+            int rel_x = x - x_atual;
+            int rel_y = y - y_atual;
+            if (rel_x >= 0 && rel_x < 4 && rel_y >= 0 && rel_y < 4) {
+                int pi = rotacionar(rel_x, rel_y, rotacao_atual);
+                if (atual.forma[pi] != '.') {
+                    screenSetColor(atual.cor, BLACK);
+                    printf("%c", atual.simbolo);
+                    continue;
+                }
+            }
+
+            screenSetColor(t->matriz[y][x].cor, BLACK);
+            printf("%c", t->matriz[y][x].caracter);
+        }
+    }
+    screenSetColor(WHITE, BLACK); 
+}
+
 void inicializar_mapa(MAPA *t) {
     for (int y = 0; y < t->linhas; y++) {
         for (int x = 0; x < t->colunas; x++) {
-            t->matriz[y][x] = ' ';
+            t->matriz[y][x].caracter = ' ';     
+            t->matriz[y][x].cor = DEFAULT_COLOR; 
         }
     }
 }

@@ -1,10 +1,17 @@
 #ifndef _MAPA_H_
 #define _MAPA_H_
 
+#define DEFAULT_COLOR WHITE
+
 typedef struct {
+    char caracter;
+    screenColor cor;
+} Grade_jogo;
+
+typedef struct {
+    Grade_jogo **matriz;
     int linhas;
     int colunas;
-    char** matriz; 
 } MAPA;
 
 #include "tetris.h"

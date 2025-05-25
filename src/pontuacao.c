@@ -112,12 +112,11 @@ void exibir_ranking() {
     int cont_jogadores;
     receber_dados_pontuacao(pontos, &cont_jogadores);
     
-    //screenClear();
-    screenGotoxy(30, 10);
+    screenGotoxy(30, 9);
     printf("RANKING\n");
 
     if (cont_jogadores == 0) {
-        screenGotoxy(26, 11);
+        screenGotoxy(26, 7);
         printf("Nenhuma pontuacao disponivel.\n");
     } 
     else {
@@ -125,7 +124,7 @@ void exibir_ranking() {
         int maior_pontuacao = (cont_jogadores < TOP_MAIORES_PONT) ? cont_jogadores : TOP_MAIORES_PONT;
 
         for (int i = 0; i < maior_pontuacao; i++) {
-            screenGotoxy(26, 13 + i);
+            screenGotoxy(24, 11 + i);
             
             if (i == 0) {
                 printf("%d. ★ %s- %d pontos", i+1, pontos[i].nome, pontos[i].pontuacao);
@@ -136,10 +135,7 @@ void exibir_ranking() {
         }
     }
 
-    screenGotoxy(10, 14 + (cont_jogadores > 0 ? cont_jogadores : 1));
-    // printf("Pressione qualquer tecla para voltar ao menu principal.\n");
-    // screenUpdate();
-    // readch();
+    screenGotoxy(10, 13 + (cont_jogadores > 0 ? cont_jogadores : 1));
     voltar_menu();
 }
 

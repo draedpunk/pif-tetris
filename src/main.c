@@ -87,14 +87,14 @@ int main() {
 
     while (1) {
         dimensoes_tela_inicio_fim();
-        banner_titulo(); // ja mostra o menu
+        banner_titulo(); // já mostra o menu
         screenHideCursor();
         opcao = getchar();
 
         while (getchar() != '\n');
 
         switch (opcao) {
-            case '1':
+            case '1': {
                 input_nome_jogador(nome);
                 inicializar_jogo(&t);
 
@@ -118,13 +118,15 @@ int main() {
                     if (cair && pode_encaixar(&t, tipo, rot, x, y + 1)) {
                         y++;
                         timerUpdateTimer(velocidade);
-
                     } else if (!pode_encaixar(&t, tipo, rot, x, y + 1)) {
-
                         posicionar_tetramino_no_mapa(&t, tipo, rot, x, y);
 
-                        if (tipo == 8){
+                        if (tipo == 8) {
+                            screenSetColor(RED, BLACK);
                             explodir(&t, x + 1, y + 1);
+                            screenSetColor(WHITE, BLACK);
+                            screenUpdate();
+                            usleep(100000); 
                         }
 
                         int linhas = remover_linhas_completas(&t);
@@ -145,8 +147,7 @@ int main() {
                         if (verificar_game_over(&t, tipo, rot, x, y)) {
                             fim_jogo = 1;
                             screenGotoxy(INICIO_X, INICIO_Y + t.linhas / 2);
-                            exibir_banner_gameover();
-                            // exibir qlqr tecla pra voltar pro menu
+                            exibir_banner_gameover(); // já tem opção de voltar ao menu
                         }
                     }
 
@@ -159,10 +160,12 @@ int main() {
                 salvar_pontuacao(nome, pontuacao);
 
                 screenDestroy();
-                for (int i = 0; i < t.linhas; i++)
+                for (int i = 0; i < t.linhas; i++) {
                     free(t.matriz[i]);
+                }
                 free(t.matriz);
                 break;
+            }
 
             case '2':
                 dimensoes_tela_inicio_fim();
@@ -170,10 +173,11 @@ int main() {
                 break;
 
             case '3':
-                //screenGotoxy(25, 18);
+                screenClear();
                 return 0;
 
             default:
+                screenClear();
                 screenGotoxy(25, 18);
                 printf("Opcao invalida.\n");
                 sleep(1);
