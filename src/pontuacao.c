@@ -64,8 +64,6 @@ void exibir_campo_nome(const char nome[]) {
     printf("%s", nome);
 }
 
-
-
 void input_nome_jogador(char *nome_jogador) {
     screenClear();
     dimensoes_tela_inicio_fim();
@@ -88,24 +86,63 @@ void input_nome_jogador(char *nome_jogador) {
     screenHideCursor();
 }
 
-void receber_dados_pontuacao(Jogador pontos[], int *qtd_dados){
-    FILE *arquivo_pontos = fopen("./assets/ascii-arts/ranking.txt", "r");
-    if (arquivo_pontos == NULL){
-        printf("erro ao abrir arquivo.\n");
+void receber_dados_pontuacao(Jogador pontos[], int *qtd_dados) {
+    FILE *arquivo_pontos = fopen("./assets/ranking.txt", "r");
+    if (arquivo_pontos == NULL) {
+        printf("arquivo nao disponivel.\n");
+        perror("Error");
         return;
     }
 
-    *qtd_dados =0;
-    while(fscanf(arquivo_pontos, "%25[^|] | %d\n", pontos[*qtd_dados].nome, &pontos[*qtd_dados].pontuacao) == 2){
+    *qtd_dados = 0;
+    while(fscanf(arquivo_pontos, " %25[^|] | %d", 
+                pontos[*qtd_dados].nome, 
+                &pontos[*qtd_dados].pontuacao) == 2) {
         (*qtd_dados)++;
-
-        if ((*qtd_dados) >= LIMITE_JOGADORES){
+        
+        if ((*qtd_dados) >= LIMITE_JOGADORES) {
             break;
         }
-
     }
     fclose(arquivo_pontos);
 }
+
+void exibir_ranking() {
+    Jogador pontos[LIMITE_JOGADORES];
+    int cont_jogadores;
+    receber_dados_pontuacao(pontos, &cont_jogadores);
+    
+    //screenClear();
+    screenGotoxy(30, 10);
+    printf("RANKING\n");
+
+    if (cont_jogadores == 0) {
+        screenGotoxy(26, 11);
+        printf("Nenhuma pontuacao disponivel.\n");
+    } 
+    else {
+        colocar_ordem_cresc(pontos, cont_jogadores);
+        int maior_pontuacao = (cont_jogadores < TOP_MAIORES_PONT) ? cont_jogadores : TOP_MAIORES_PONT;
+
+        for (int i = 0; i < maior_pontuacao; i++) {
+            screenGotoxy(26, 13 + i);
+            
+            if (i == 0) {
+                printf("%d. ★ %s- %d pontos", i+1, pontos[i].nome, pontos[i].pontuacao);
+            } 
+            else {
+                printf("%d. %s- %d pontos", i+1, pontos[i].nome, pontos[i].pontuacao);
+            }
+        }
+    }
+
+    screenGotoxy(10, 14 + (cont_jogadores > 0 ? cont_jogadores : 1));
+    // printf("Pressione qualquer tecla para voltar ao menu principal.\n");
+    // screenUpdate();
+    // readch();
+    voltar_menu();
+}
+
 
 void colocar_ordem_cresc(Jogador pontos[], int qtd_dados){
     Jogador valor_temporario;
@@ -120,45 +157,6 @@ void colocar_ordem_cresc(Jogador pontos[], int qtd_dados){
             }
         }
     }
-}
-
-
-void exibir_ranking(){
-    Jogador pontos[LIMITE_JOGADORES];
-    int cont_jogadores;
-    int maior_pontuacao;
-    receber_dados_pontuacao(pontos, &cont_jogadores);
-    screenClear();
-
-    screenGotoxy(SCRSTARTX + 35, SCRSTARTY + 5);
-    printf("RANKING\n");
-
-    if (cont_jogadores ==0){
-        screenGotoxy(SCRSTARTX + 29, SCRSTARTY + 12);
-        printf("Nenhuma pontuacao disponivel.\n");
-    } else{
-        colocar_ordem_cresc(pontos, cont_jogadores);
-        maior_pontuacao = cont_jogadores < TOP_MAIORES_PONT ? cont_jogadores : TOP_MAIORES_PONT;
-
-        for (int i =0; i < maior_pontuacao; i++){
-            screenGotoxy(SCRSTARTX + 29, SCRSTARTY + 12 + i);
-
-            char dados_pontuacao[60];
-
-            if (i ==0){
-                snprintf(dados_pontuacao, sizeof(dados_pontuacao), "%d. ★ %s - %d pontos", i+1, pontos[i].nome, pontos[i].pontuacao);
-            } else{
-                snprintf(dados_pontuacao, sizeof(dados_pontuacao), "%d. %s - %d pontos", i+1, pontos[i].nome, pontos[i].pontuacao);
-            }
-
-            // centralizar ranking de alguma forma aq
-        }
-    }
-
-    screenGotoxy(SCRSTARTX + 20, SCRSTARTY + 14 + (maior_pontuacao > 0 ? maior_pontuacao : 1));
-    printf("Pressione qualquer tecla para voltar ao menu principal.\n");
-    readch();
-
 }
 
 void exibir_pontuacao(int *pontuacao){

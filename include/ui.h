@@ -8,6 +8,7 @@ void exibir_banner_gameover();
 void dimensoes_tela_inicio_fim();
 void dimensoes_tela_jogo();
 void bordas_personalizadas(int min_x, int max_x, int min_y,int max_y);
+void voltar_menu();
 
 
 #endif

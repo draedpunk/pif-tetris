@@ -54,7 +54,6 @@ void inicializar_jogo(MAPA *t) {
     screenInit(1);
     dimensoes_tela_jogo();
     timerInit(500);
-    exibir_banner_titulo();
 }
 
 int subir_nivel(int nivel_atual, int acumulador_linhas, int *velocidade) {
@@ -66,7 +65,6 @@ int subir_nivel(int nivel_atual, int acumulador_linhas, int *velocidade) {
 
     return novo_nivel;
 }
-
 
 void exibir_nivel(int nivel_atual){
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 4);
@@ -89,21 +87,17 @@ int main() {
 
     while (1) {
         dimensoes_tela_inicio_fim();
-        banner_titulo();
+        banner_titulo(); // ja mostra o menu
         screenHideCursor();
         opcao = getchar();
-        //screenHideCursor();
 
         while (getchar() != '\n');
 
         switch (opcao) {
             case '1':
-                
                 input_nome_jogador(nome);
                 inicializar_jogo(&t);
 
-                // a partir daqui, tudo dentro da main:
-                screenClear();
                 int pontuacao = 0, fim_jogo = 0, velocidade = 1000;
                 int teclas[4] = {0}, bRotateHold = 1;
                 int tipo = rand() % 9, rot = 0;
@@ -124,11 +118,14 @@ int main() {
                     if (cair && pode_encaixar(&t, tipo, rot, x, y + 1)) {
                         y++;
                         timerUpdateTimer(velocidade);
+
                     } else if (!pode_encaixar(&t, tipo, rot, x, y + 1)) {
+
                         posicionar_tetramino_no_mapa(&t, tipo, rot, x, y);
 
-                        if (tipo == 8)
+                        if (tipo == 8){
                             explodir(&t, x + 1, y + 1);
+                        }
 
                         int linhas = remover_linhas_completas(&t);
                         acumulador_linhas += linhas;
@@ -149,6 +146,7 @@ int main() {
                             fim_jogo = 1;
                             screenGotoxy(INICIO_X, INICIO_Y + t.linhas / 2);
                             exibir_banner_gameover();
+                            // exibir qlqr tecla pra voltar pro menu
                         }
                     }
 
@@ -167,17 +165,17 @@ int main() {
                 break;
 
             case '2':
+                dimensoes_tela_inicio_fim();
                 exibir_ranking();
                 break;
 
             case '3':
-                screenGotoxy(25, 18);
-                printf("Saindo... Até logo!\n");
+                //screenGotoxy(25, 18);
                 return 0;
 
             default:
                 screenGotoxy(25, 18);
-                printf("Opcao invalida! Tente novamente.\n");
+                printf("Opcao invalida.\n");
                 sleep(1);
         }
     }

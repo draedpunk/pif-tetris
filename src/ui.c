@@ -52,6 +52,9 @@ void banner_gameover() {
     printf("| <_/\\|   ||     || _>  | | || ' || _> |   /");
     screenGotoxy(bannerX, bannerY + 3);
     printf("\\____/|_|_||_|_|_||___> \\___/|__/ |___>|_\\_\\");
+
+    screenGotoxy(10, 16);
+    voltar_menu();
 }
 
 void exibir_banner_titulo() {
@@ -119,6 +122,12 @@ void dimensoes_tela_inicio_fim() {
 
 void dimensoes_tela_jogo() {
     bordas_personalizadas(2, 36, 2, 24);
+}
+
+void voltar_menu(){
+    printf("Pressione qualquer tecla para voltar ao menu principal.\n");
+    screenUpdate();
+    readch();
 }
 
 
