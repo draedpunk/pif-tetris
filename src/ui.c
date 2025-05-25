@@ -9,6 +9,7 @@
 
 #include "tetris.h"
 #include "ui.h"
+#include "musica.h"
 
 void banner_titulo() {
     int largura_util = 68;
