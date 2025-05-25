@@ -1,58 +1,41 @@
 #include "musica.h"
 #include <stdio.h>
 
-Mix_Music* musica_menu_tetris(){
-    Mix_Music *tetris_musica = Mix_LoadMUS("./assets/musicas/tetris_song.mp3");
-    if (!tetris_musica) {
-        fprintf(stderr, "erro ao carregar musica do tetris: %s\n", Mix_GetError());
+Musica* carregar_sons() {
+    Musica *audio = malloc(sizeof(Musica));
+    if (!audio) {
         return NULL;
     }
-    return tetris_musica;
+    memset(audio, 0, sizeof(Musica));
+
+    audio->musica_tetris= Mix_LoadMUS("assets/musicas/tetris_song.mp3");
+    audio->musica_gameover = Mix_LoadMUS("assets/musicas/game_over_tetris_ver.mp3");
+    audio->som_linha = Mix_LoadWAV("assets/musicas/clear.wav");
+    audio->som_nivel = Mix_LoadWAV("assets/musicas/levelup.wav");
+    audio->som_peca = Mix_LoadWAV("assets/musicas/drop.wav");
+    audio->som_explosao = Mix_LoadWAV("assets/musicas/explosion.wav");
+
+    if (!audio->musica_tetris || !audio->musica_gameover ||
+        !audio->som_linha || !audio->som_nivel || !audio->som_peca || !audio->som_explosao) {
+        fprintf(stderr, "Erro ao carregar audio: %s\n", Mix_GetError());
+        liberar_sons(audio);
+        return NULL;
+    }
+
+    return audio;
 }
 
-Mix_Music* som_gameover(){
-    Mix_Music *gameover_musica = Mix_LoadMUS("./assets/musicas/game_over_tetris_ver.mp3");
-    if (!gameover_musica) {
-        fprintf(stderr, "Erro ao carregar musica de game over: %s\n", Mix_GetError());
-        return NULL;
-    }
-    return gameover_musica;
-}
-
-Mix_Chunk* som_peca_fixada(){
-    Mix_Chunk *peca_fixada = Mix_LoadWAV("./assets/musicas/drop.wav");
-    if (!peca_fixada) {
-        fprintf(stderr, "Erro ao carregar som da peca fixada: %s\n", Mix_GetError());
-        return NULL;
-    }
-    return peca_fixada;
-}
-
-Mix_Chunk* som_explosao(){
-    Mix_Chunk *explosao = Mix_LoadWAV("./assets/musicas/explosion.wav");
-    if (!explosao) {
-        fprintf(stderr, "Erro ao carregar som de explosao: %s\n", Mix_GetError());
-        return NULL;
-    }
-    return explosao;
-}
-
-Mix_Chunk* som_linha_remov(){
-    Mix_Chunk *linha = Mix_LoadWAV("./assets/clear.wav");
-    if (!linha) {
-        fprintf(stderr, "Erro ao carregar som de linha removida: %s\n", Mix_GetError());
-        return NULL;
-    }
-    return linha;
-}
-
-Mix_Chunk* som_novo_nivel(){
-    Mix_Chunk *nivel = Mix_LoadWAV("./assets/levelup.wav");
-    if (!nivel) {
-        fprintf(stderr, "Erro ao carregar som de novo nivel: %s\n", Mix_GetError());
-        return NULL;
-    }
-    return nivel;
+void liberar_sons(Musica *audio) {
+    if (!audio) return;
+    
+    Mix_FreeMusic(audio->musica_tetris);
+    Mix_FreeMusic(audio->musica_gameover);
+    Mix_FreeChunk(audio->som_linha);
+    Mix_FreeChunk(audio->som_nivel);
+    Mix_FreeChunk(audio->som_peca);
+    Mix_FreeChunk(audio->som_explosao);
+    
+    free(audio);
 }
 
 void inicializar_audio(){

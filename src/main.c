@@ -83,16 +83,28 @@ void exibir_nivel(int nivel_atual){
 
 int main() {
     inicializar_audio();
+    
+    if (!Mix_QuerySpec(NULL, NULL, NULL)) {
+        fprintf(stderr, "Falha na inicializacao dos audios\n");
+        return 1;
+    }
+
+    Musica *audio = carregar_sons();
+    if (!audio) {
+        fprintf(stderr, "Falha ao carregar assets de audio\n");
+        Mix_CloseAudio();
+        return 1;
+    }
+
     char nome[30];
     MAPA t;
     int opcao;
 
-    while (1) {
-        Mix_Music *musica_menu = musica_menu_tetris();
-        if (musica_menu != NULL) {
-            Mix_PlayMusic(musica_menu, -1);  // Toca no menu
-        }
+    if (audio->musica_tetris != NULL) {
+        Mix_PlayMusic(audio->musica_tetris, -1); 
+    }
 
+    while (1) {
         dimensoes_tela_inicio_fim();
         banner_titulo(); // mostra o menu
         screenHideCursor();
@@ -101,14 +113,6 @@ int main() {
 
         switch (opcao) {
             case '1': {
-                Mix_HaltMusic();  // Para a música do menu
-                Mix_FreeMusic(musica_menu);
-
-                Mix_Music *musica_jogo = Mix_LoadMUS("./assets/musicas/tetris_song.mp3");
-                if (musica_jogo != NULL) {
-                    Mix_PlayMusic(musica_jogo, -1);  // Música do jogo
-                }
-
                 input_nome_jogador(nome);
                 inicializar_jogo(&t);
 
@@ -135,12 +139,11 @@ int main() {
                     } else if (!pode_encaixar(&t, tipo, rot, x, y + 1)) {
                         posicionar_tetramino_no_mapa(&t, tipo, rot, x, y);
 
-                        Mix_Chunk *som_peca = som_peca_fixada();
-                        if (som_peca) Mix_PlayChannel(-1, som_peca, 0);
+                        // chamada do som da peça fixada
+                        if (audio->som_peca) Mix_PlayChannel(-1, audio->som_peca, 0);
 
-                        if (tipo == 8) {
-                            Mix_Chunk *som_explo = som_explosao();
-                            if (som_explo) Mix_PlayChannel(-1, som_explo, 0);
+                        if (tipo == 8) {  // chamada da muisca de explosao
+                            if (audio->som_explosao) Mix_PlayChannel(-1, audio->som_explosao, 0);
 
                             screenSetColor(RED, BLACK);
                             explodir(&t, x + 1, y + 1);
@@ -150,18 +153,16 @@ int main() {
                         }
 
                         int linhas = remover_linhas_completas(&t);
-                        if (linhas > 0) {
-                            Mix_Chunk *som_linha = som_linha_remov();
-                            if (som_linha) Mix_PlayChannel(-1, som_linha, 0);
+                        if (linhas > 0 && audio->som_linha) {
+                            Mix_PlayChannel(-1, audio->som_linha, 0);
                         }
 
                         acumulador_linhas += linhas;
                         exibir_linhas_removidas(acumulador_linhas);
 
                         int novo_nivel = subir_nivel(nivel_atual, acumulador_linhas, &velocidade);
-                        if (novo_nivel > nivel_atual) {
-                            Mix_Chunk *som_nivel = som_novo_nivel();
-                            if (som_nivel) Mix_PlayChannel(-1, som_nivel, 0);
+                        if (novo_nivel > nivel_atual && audio->som_nivel) {
+                            Mix_PlayChannel(-1, audio->som_nivel, 0);
                         }
                         nivel_atual = novo_nivel;
 
@@ -175,10 +176,9 @@ int main() {
 
                         if (verificar_game_over(&t, tipo, rot, x, y)) {
                             fim_jogo = 1;
-
-                            Mix_HaltMusic();
-                            Mix_Music *musica_gameover = som_gameover();
-                            if (musica_gameover) Mix_PlayMusic(musica_gameover, 1);
+                            if (audio->musica_gameover) {
+                                Mix_PlayMusic(audio->musica_gameover, 1);
+                            }
 
                             screenGotoxy(INICIO_X, INICIO_Y + t.linhas / 2);
                             exibir_banner_gameover();
@@ -199,18 +199,33 @@ int main() {
                 }
                 free(t.matriz);
 
-                Mix_HaltMusic();
-                Mix_FreeMusic(musica_jogo);
+                // Return to main Tetris music after game over
+                if (audio->musica_tetris != NULL) {
+                    Mix_PlayMusic(audio->musica_tetris, -1);
+                }
                 break;
             }
 
-            case '2':
-                dimensoes_tela_inicio_fim();
-                exibir_ranking();
+            case '2': {
+                int sair_ranking = 0;
+                while (!sair_ranking) {
+                    screenClear();
+                    dimensoes_tela_inicio_fim();
+                    exibir_ranking();
+                    
+                    char op = getchar();
+                    while (getchar() != '\n');
+                    
+                    if (op == '0' || op == '\n') {
+                        sair_ranking = 1;
+                    }
+                }
                 break;
+            }
 
             case '3':
                 screenClear();
+                liberar_sons(audio);
                 return 0;
 
             default:

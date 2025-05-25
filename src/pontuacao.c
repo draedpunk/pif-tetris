@@ -108,6 +108,7 @@ void receber_dados_pontuacao(Jogador pontos[], int *qtd_dados) {
 }
 
 void exibir_ranking() {
+    //dimensoes_tela_inicio_fim();
     Jogador pontos[LIMITE_JOGADORES];
     int cont_jogadores;
     receber_dados_pontuacao(pontos, &cont_jogadores);

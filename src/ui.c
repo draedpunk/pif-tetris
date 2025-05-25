@@ -117,7 +117,7 @@ void bordas_personalizadas(int min_x, int max_x, int min_y,int max_y) {
 }
 
 void dimensoes_tela_inicio_fim() {
-
+    //bordas_personalizadas(int min_x, int max_x, int min_y,int max_y)
     bordas_personalizadas(2, 70,2, 24);
 }
 
@@ -126,10 +126,14 @@ void dimensoes_tela_jogo() {
 }
 
 void voltar_menu(){
-    printf("Pressione qualquer tecla para voltar ao menu principal.\n");
+    printf("Pressione 0 ou ENTER para voltar ao menu principal.\n");
+    readch(); 
+    while (keyhit()) {
+        readch();
+    } 
     screenUpdate();
-    readch();
 }
+
 
 
 
