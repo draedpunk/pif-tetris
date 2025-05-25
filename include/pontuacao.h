@@ -15,6 +15,7 @@ typedef struct{
 void atualizar_pontuacao(int *pontuacao, int linhas, int eh_explosiva);
 void salvar_pontuacao(const char *nome, int pontuacao);
 void input_nome_jogador(char *nome_destino);
+void exibir_campo_nome(const char nome[]);
 void receber_dados_pontuacao(Jogador pontos[], int *qtd_dados);
 void colocar_ordem_cresc(Jogador pontos[], int qtd_dados);
 void exibir_ranking();

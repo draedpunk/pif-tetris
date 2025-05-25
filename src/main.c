@@ -86,6 +86,7 @@ void exibir_nivel(int nivel_atual){
 
 
 int main() {
+    dimensoes_tela_inicio_fim();
     char nome_jogadr[30];
     input_nome_jogador(nome_jogadr);
 

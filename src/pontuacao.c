@@ -9,6 +9,7 @@
 #include "tetraminos.h"
 #include "mapa.h"
 #include "pontuacao.h"
+#include "ui.h"
 
 // limite maximo de jogadores pro jogo 50
 // ranking vai mostrar no max as 5 maiores pontuacoes
@@ -39,17 +40,52 @@ void salvar_pontuacao(const char *nome, int pontuacao) {
     fclose(arquivo);
 }
 
+void exibir_campo_nome(const char nome[]) {
+    int campo_largura = 30;
+    int inicio_x = (2 + 70 - campo_largura) / 2; 
+    int inicio_y = 6;
+
+    screenGotoxy(inicio_x + 7, inicio_y + 5); 
+    printf("Informe seu nome");
+
+    screenGotoxy(inicio_x, inicio_y + 6);
+    printf("------------------------------");
+
+    screenGotoxy(inicio_x, inicio_y + 7);
+    printf("|                            |");
+
+    screenGotoxy(inicio_x, inicio_y + 8);
+    printf("------------------------------");
+
+    screenGotoxy(inicio_x, inicio_y + 9);
+    printf("Pressione ENTER para continuar");
+
+    screenGotoxy(inicio_x, inicio_y + 7); 
+    printf("%s", nome);
+}
+
+
 
 void input_nome_jogador(char *nome_jogador) {
     screenClear();
-    screenGotoxy(SCRSTARTX + 29, SCRSTARTY + 10);
-    printf("Informe seu nome: ");
+    dimensoes_tela_inicio_fim();
+    exibir_campo_nome("");
 
-    screenGotoxy(SCRSTARTX + 29, SCRSTARTY + 11);
-    scanf(" %25[^\n]", nome_jogador);
+    int campo_largura = 30;
+    int inicio_x = (2 + 70 - campo_largura)/2;
+    int inicio_y = 6;
 
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
+    screenGotoxy(inicio_x + 2, inicio_y + 7);
+
+    screenShowCursor();
+    fgets(nome_jogador, 30, stdin);
+
+    size_t len = strlen(nome_jogador);
+    if (len > 0 && nome_jogador[len - 1] == '\n') {
+        nome_jogador[len - 1] = '\0';
+    }
+
+    screenHideCursor();
 }
 
 void receber_dados_pontuacao(Jogador pontos[], int *qtd_dados){
