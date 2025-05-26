@@ -98,8 +98,8 @@ void exibir_banner_gameover() {
     dimensoes_tela_inicio_fim();
     banner_gameover();
     screenUpdate();
-    sleep(3);
-    screenClear();
+    // sleep(3);
+    // screenClear();
 }
 
 void bordas_personalizadas(int min_x, int max_x, int min_y,int max_y) {

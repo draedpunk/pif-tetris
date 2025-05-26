@@ -108,7 +108,7 @@ int main() {
     char nome[30];
     MAPA t;
     int opcao;
-    
+
     /* MUSICA DO TETRIS TAVA TRAVANDO MUITO */
 
     // comeca a musica do tetris em loop infinito
@@ -208,6 +208,8 @@ int main() {
 
                             screenGotoxy(INICIO_X, INICIO_Y + t.linhas / 2);
                             exibir_banner_gameover();
+                            screenClear();
+                            
                         }
                     }
                     // atualizam oq é mostrado na tela enquanto o jogo ainda roda
