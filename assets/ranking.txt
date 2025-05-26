@@ -9,3 +9,8 @@ cu | 850
 teste | 150
 tet | 150
 dd | 25
+kiko | 200
+cu | 150
+cucucu | 100
+iko | 150
+k | 175

@@ -80,7 +80,7 @@ void banner_gameover() {
     printf("\\____/|_|_||_|_|_||___> \\___/|__/ |___>|_\\_\\");
     screenSetColor(WHITE, BLACK);
 
-    screenGotoxy(10, 16);
+    screenGotoxy(14, 16);
     voltar_menu();
 }
 
@@ -155,7 +155,7 @@ void dimensoes_tela_jogo() {
 
 void voltar_menu() {
     screenSetColor(YELLOW, BLACK);
-    printf("Pressione 0 ou ENTER para voltar ao menu principal.\n");
+    printf("Pressione 0 para voltar ao menu principal.\n");
     screenUpdate();
 
     int tecla;

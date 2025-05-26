@@ -253,15 +253,15 @@ void exibir_prox_peca(int proxima_peca) {
 
 void exibir_linhas_removidas(int total_linhas_remov) {
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 8);
-    screenSetColor(BLUE, BLACK);
+    screenSetColor(MAGENTA, BLACK);
     printf("+---Linhas---+");
 
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 9);
-    screenSetColor(BLUE, BLACK);
+    screenSetColor(MAGENTA, BLACK);
     printf("|            |");
 
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 10);
-    screenSetColor(BLUE, BLACK);
+    screenSetColor(MAGENTA, BLACK);
     printf("+------------+");
 
     screenGotoxy(INICIO_X + LARGURA_JOGO + 9, INICIO_Y + 9);

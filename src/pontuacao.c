@@ -46,6 +46,7 @@ void exibir_campo_nome(const char nome[]) {
     int inicio_y = 6;
 
     screenGotoxy(inicio_x + 7, inicio_y + 5); 
+    screenSetColor(YELLOW, BLACK);
     printf("Informe seu nome");
 
     screenGotoxy(inicio_x, inicio_y + 6);
@@ -58,6 +59,7 @@ void exibir_campo_nome(const char nome[]) {
     printf("------------------------------");
 
     screenGotoxy(inicio_x, inicio_y + 9);
+    screenSetColor(LIGHTMAGENTA,BLACK);
     printf("Pressione ENTER para continuar");
 
     screenGotoxy(inicio_x, inicio_y + 7); 
@@ -162,15 +164,15 @@ void colocar_ordem_cresc(Jogador pontos[], int qtd_dados){
 
 void exibir_pontuacao(int *pontuacao){
 
-    screenSetColor(CYAN, BLACK);
+    screenSetColor(GREEN, BLACK);
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 0);
     printf("+---Pontos---+");
 
-    screenSetColor(CYAN, BLACK);
+    screenSetColor(GREEN, BLACK);
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 1);
     printf("|            |");
 
-    screenSetColor(CYAN, BLACK);
+    screenSetColor(GREEN, BLACK);
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 2);
     printf("+------------+");
 

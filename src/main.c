@@ -83,37 +83,34 @@ int subir_nivel(int *nivel_atual, int acumulador_linhas, int *velocidade) {
 
 void exibir_nivel(int nivel_atual){
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 4);
+    screenSetColor(YELLOW, BLACK);
     printf("+---Nivel----+");
 
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 5);
+    screenSetColor(YELLOW, BLACK);
     printf("|            |");
 
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 6);
+    screenSetColor(YELLOW, BLACK);
     printf("+------------+");
 
     screenGotoxy(INICIO_X + LARGURA_JOGO + 9, INICIO_Y + 5);
+    screenSetColor(LIGHTRED, BLACK);
     printf("%4d", nivel_atual);
 }
 
 int main() {
     // inicializar os audios
-    inicializar_audio();
-    if (!Mix_QuerySpec(NULL, NULL, NULL)) {
-        fprintf(stderr, "Falha na inicializacao dos audios\n");
-        //return 1;
-    }
-    Musica *audio = carregar_sons();
-    if (!audio) {
-        fprintf(stderr, "Falha ao carregar assets de audio\n");
-        Mix_CloseAudio();
-        return 1;
-    }
+    int audio_ok;  // estado do audio
+    Musica *audio = inicializar_tudo_audio(&audio_ok);
+
     // nome do joagdor e variavel da opcao do menu
     char nome[30];
     MAPA t;
     int opcao;
     // comeca a musica do tetris em loop infinito
-    if (audio->musica_tetris != NULL) {
+    if (audio_ok && audio->musica_tetris != NULL) {
+        //Mix_VolumeMusic(64);  // Set moderate volume
         Mix_PlayMusic(audio->musica_tetris, -1); 
     }
 
@@ -123,7 +120,6 @@ int main() {
         screenHideCursor();
 
         opcao = ler_opcao_menu();
-        //while (getchar() != '\n');
 
         switch (opcao) {
             case '1': { // opcao [1] INICIAR JOGO
@@ -158,10 +154,16 @@ int main() {
                     } else if (!pode_encaixar(&t, peca_atual, rot, x, y + 1)) { // caso nao possa encaixar no mapa, prende o tetramino
                         posicionar_tetramino_no_mapa(&t, peca_atual, rot, x, y);
                         // chamada do som da peça fixada
-                        if (audio->som_peca) Mix_PlayChannel(-1, audio->som_peca, 0);
+                        if (audio_ok && audio->som_peca) {
+                            Mix_VolumeChunk(audio->som_peca, 40);  // Lower volume for less distortion
+                            Mix_PlayChannel(-1, audio->som_peca, 0);
+                        }
 
                         if (peca_atual == 8) {  // peca explosiva numero 8 tetraminos[8], ai toca a musica
-                            if (audio->som_explosao) Mix_PlayChannel(-1, audio->som_explosao, 0);
+                            if (audio_ok && audio->som_explosao) {
+                                Mix_VolumeChunk(audio->som_explosao, 64);
+                                Mix_PlayChannel(-1, audio->som_explosao, 0);
+                            }
 
                             screenSetColor(RED, BLACK);
                             explodir(&t, x + 1, y + 1);
@@ -170,15 +172,17 @@ int main() {
                         }
 
                         int linhas = remover_linhas_completas(&t); // conta qts linhas foram removidas
-                        if (linhas > 0 && audio->som_linha) {
-                            Mix_PlayChannel(-1, audio->som_linha, 0); // toca o som da linha eliminada
+                        if (linhas > 0 && audio_ok && audio->som_linha) {
+                            Mix_VolumeChunk(audio->som_linha, 50);
+                            Mix_PlayChannel(-1, audio->som_linha, 0);
                         }
                         // acumula as linhas, mostra a qtd e depois verifica se atigiu a qtd minima (5) pra passar de nivel
                         acumulador_linhas += linhas;
                         exibir_linhas_removidas(acumulador_linhas);
 
                         if (subir_nivel(&nivel_atual, acumulador_linhas, &velocidade)) {
-                            if (audio->som_nivel) { // linhas removi >= 5 : level up!
+                            if (audio_ok && audio->som_nivel) { // linhas removi >= 5 : level up!
+                                Mix_VolumeChunk(audio->som_nivel, 50);
                                 Mix_PlayChannel(-1, audio->som_nivel, 0);
                             }
                         }
@@ -195,20 +199,20 @@ int main() {
 
                         if (verificar_game_over(&t, peca_atual, rot, x, y)) {
                             fim_jogo = 1; // é game over, ent toca a musica e mostra o banner
-                            if (audio->musica_gameover) {
+                            if (audio_ok && audio->musica_gameover) {
+                                Mix_VolumeMusic(64);
                                 Mix_PlayMusic(audio->musica_gameover, 1);
                             }
 
                             screenGotoxy(INICIO_X, INICIO_Y + t.linhas / 2);
                             exibir_banner_gameover();
-                            //voltar_menu();
                         }
                     }
                     // atualizam oq é mostrado na tela enquanto o jogo ainda roda
                     desenhar_mapa_com_peca(&t, peca_atual, rot, x, y);
                     exibir_prox_peca(peca_proxima);
                     screenUpdate();
-                    usleep(50000);
+                    usleep(5000);
                 }
                 // perdeu!! salva a pontuacao do jogador beltrano e mata a tela
                 salvar_pontuacao(nome, pontuacao);
@@ -220,7 +224,8 @@ int main() {
                 free(t.matriz);
 
                 // chamada da musica tetris de novo apos o game over
-                if (audio->musica_tetris != NULL) {
+                if (audio_ok && audio->musica_tetris != NULL) {
+                    Mix_VolumeMusic(64);
                     Mix_PlayMusic(audio->musica_tetris, -1);
                 }
                 break;
@@ -230,6 +235,7 @@ int main() {
                 screenClear();
                 dimensoes_tela_inicio_fim();
                 exibir_ranking();
+                screenGotoxy(14, 19);
                 voltar_menu(); 
                 break;
             }
