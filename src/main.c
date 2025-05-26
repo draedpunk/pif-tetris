@@ -44,6 +44,18 @@ void processar_input(int *teclas, int *x, int *y, int *rot, int *pode_rodar_hold
     }
 }
 
+int ler_opcao_menu() {
+    int c;
+    do {
+        c = getchar();
+    } while (c == '\n');
+    
+    while (getchar() != '\n');
+
+    return c;
+}
+
+
 int verificar_game_over(MAPA *t, int peca_atual, int rot, int x, int y) {
     return !pode_encaixar(t, peca_atual, rot, x, y);
 }
@@ -68,7 +80,6 @@ int subir_nivel(int *nivel_atual, int acumulador_linhas, int *velocidade) {
 
     return 0; // nivel nao mudou
 }
-
 
 void exibir_nivel(int nivel_atual){
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 4);
@@ -110,8 +121,9 @@ int main() {
         dimensoes_tela_inicio_fim(); //tela menor
         banner_titulo(); // mostra o menu
         screenHideCursor();
-        opcao = getchar();
-        while (getchar() != '\n');
+
+        opcao = ler_opcao_menu();
+        //while (getchar() != '\n');
 
         switch (opcao) {
             case '1': { // opcao [1] INICIAR JOGO
@@ -189,6 +201,7 @@ int main() {
 
                             screenGotoxy(INICIO_X, INICIO_Y + t.linhas / 2);
                             exibir_banner_gameover();
+                            //voltar_menu();
                         }
                     }
                     // atualizam oq é mostrado na tela enquanto o jogo ainda roda
@@ -214,20 +227,10 @@ int main() {
             }
 
             case '2': { // opcao [2] RANKING
-                int sair_ranking = 0;
-                while (!sair_ranking) {
-                    screenClear();
-                    dimensoes_tela_inicio_fim();
-                    exibir_ranking();
-                
-                    char op = getchar();
-                    while (getchar() != '\n');
-                    
-                    if (op == '0' || op == '\n') {
-                        sair_ranking = 1;
-                    }
-                }
-                //screenClear();
+                screenClear();
+                dimensoes_tela_inicio_fim();
+                exibir_ranking();
+                voltar_menu(); 
                 break;
             }
 

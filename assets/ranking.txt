@@ -5,3 +5,7 @@ DEBUSSY | 2350
 TCHAIKOVSKY | 3125
 BACH | 1700
 OZZY | 850
+cu | 850
+teste | 150
+tet | 150
+dd | 25

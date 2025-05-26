@@ -141,7 +141,7 @@ void exibir_ranking() {
     }
 
     screenGotoxy(10, 13 + (cont_jogadores > 0 ? cont_jogadores : 1));
-    voltar_menu();
+    //voltar_menu();
 }
 
 
@@ -162,15 +162,15 @@ void colocar_ordem_cresc(Jogador pontos[], int qtd_dados){
 
 void exibir_pontuacao(int *pontuacao){
 
-    screenSetColor(BLUE, BLACK);
+    screenSetColor(CYAN, BLACK);
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 0);
     printf("+---Pontos---+");
 
-    screenSetColor(BLUE, BLACK);
+    screenSetColor(CYAN, BLACK);
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 1);
     printf("|            |");
 
-    screenSetColor(BLUE, BLACK);
+    screenSetColor(CYAN, BLACK);
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 2);
     printf("+------------+");
 

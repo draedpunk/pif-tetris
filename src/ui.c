@@ -80,7 +80,6 @@ void banner_gameover() {
     printf("\\____/|_|_||_|_|_||___> \\___/|__/ |___>|_\\_\\");
     screenSetColor(WHITE, BLACK);
 
-
     screenGotoxy(10, 16);
     voltar_menu();
 }
@@ -154,15 +153,19 @@ void dimensoes_tela_jogo() {
     bordas_personalizadas(2, 36, 2, 24);
 }
 
-void voltar_menu(){
+void voltar_menu() {
     screenSetColor(YELLOW, BLACK);
     printf("Pressione 0 ou ENTER para voltar ao menu principal.\n");
-    readch(); 
-    while (keyhit()) {
-        readch();
-    } 
     screenUpdate();
+
+    int tecla;
+    do {
+        tecla = readch();
+        //  ENTER (13)
+    } while (tecla != '0' && tecla != 13);
 }
+
+
 
 // typedef enum {BLACK, RED, GREEN, BROWN, BLUE, MAGENTA, CYAN, LIGHTGRAY,
 //         DARKGRAY, LIGHTRED, LIGHTGREEN, YELLOW, LIGHTBLUE, 
