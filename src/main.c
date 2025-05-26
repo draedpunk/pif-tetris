@@ -86,7 +86,7 @@ int main() {
     
     if (!Mix_QuerySpec(NULL, NULL, NULL)) {
         fprintf(stderr, "Falha na inicializacao dos audios\n");
-        return 1;
+        //return 1;
     }
 
     Musica *audio = carregar_sons();

@@ -18,18 +18,41 @@ void banner_titulo() {
     int bannerY = (altura_util - 5) / 2 + 2;
 
     screenGotoxy(bannerX, bannerY);
-    printf(" ___  ___  ___  ___  _  ___ ");
+    screenSetColor(RED, BLACK);     printf(" ___ ");
+    screenSetColor(YELLOW, BLACK);  printf(" ___ ");
+    screenSetColor(GREEN, BLACK);   printf(" ___ ");
+    screenSetColor(CYAN, BLACK);    printf(" ___ ");
+    screenSetColor(BLUE, BLACK);    printf(" _ ");
+    screenSetColor(MAGENTA, BLACK); printf(" ___ ");
     screenGotoxy(bannerX, bannerY + 1);
-    printf("|_ _|| __>|_ _|| . \\| |/ __>");
+    screenSetColor(RED, BLACK);     printf("|_ _|");
+    screenSetColor(YELLOW, BLACK);  printf("| __>");
+    screenSetColor(GREEN, BLACK);   printf("|_ _|");
+    screenSetColor(CYAN, BLACK);    printf("| . \\");
+    screenSetColor(BLUE, BLACK);    printf("| |");
+    screenSetColor(MAGENTA, BLACK); printf("/ __>");
     screenGotoxy(bannerX, bannerY + 2);
-    printf(" | | | _>  | | |   /| |\\__ \\");
+    screenSetColor(RED, BLACK);     printf(" | | ");
+    screenSetColor(YELLOW, BLACK);  printf("| _> ");
+    screenSetColor(GREEN, BLACK);   printf(" | | ");
+    screenSetColor(CYAN, BLACK);    printf("|   /");
+    screenSetColor(BLUE, BLACK);    printf("| |");
+    screenSetColor(MAGENTA, BLACK); printf("\\__ \\");
     screenGotoxy(bannerX, bannerY + 3);
-    printf(" |_| |___> |_| |_\\_\\|_|<___/");
+    screenSetColor(RED, BLACK);     printf(" |_| ");
+    screenSetColor(YELLOW, BLACK);  printf("|___>");
+    screenSetColor(GREEN, BLACK);   printf(" |_| ");
+    screenSetColor(CYAN, BLACK);    printf("|_\\_\\");
+    screenSetColor(BLUE, BLACK);    printf("|_|");
+    screenSetColor(MAGENTA, BLACK); printf("<___/");
     screenGotoxy(bannerX, bannerY + 4);
-    printf("                             ");
+    screenSetColor(WHITE, BLACK);   printf("                             ");
+
 
     screenGotoxy(26, 16);
+    screenSetColor(YELLOW, BLACK);
     printf("Selecione uma opcao: ");
+    screenSetColor(LIGHTBLUE, BLACK);
     screenGotoxy(26, 17);
     printf("[1] INICIAR JOGO");
     screenGotoxy(26, 18);
@@ -46,6 +69,8 @@ void banner_gameover() {
     int bannerY = (altura_util - 4) / 2 + 2;
 
     screenGotoxy(bannerX, bannerY);
+    screenSetColor(LIGHTRED, BLACK);
+    screenGotoxy(bannerX, bannerY);
     printf(" ___   ___  __ __  ___   ___  _ _  ___  ___ ");
     screenGotoxy(bannerX, bannerY + 1);
     printf("/  _> | . ||  \\  \\| __> | . || | || __>| . \\");
@@ -53,6 +78,8 @@ void banner_gameover() {
     printf("| <_/\\|   ||     || _>  | | || ' || _> |   /");
     screenGotoxy(bannerX, bannerY + 3);
     printf("\\____/|_|_||_|_|_||___> \\___/|__/ |___>|_\\_\\");
+    screenSetColor(WHITE, BLACK);
+
 
     screenGotoxy(10, 16);
     voltar_menu();
@@ -118,14 +145,17 @@ void bordas_personalizadas(int min_x, int max_x, int min_y,int max_y) {
 
 void dimensoes_tela_inicio_fim() {
     //bordas_personalizadas(int min_x, int max_x, int min_y,int max_y)
+    screenSetColor(CYAN, BLACK);
     bordas_personalizadas(2, 70,2, 24);
 }
 
 void dimensoes_tela_jogo() {
+    screenSetColor(CYAN, BLACK);
     bordas_personalizadas(2, 36, 2, 24);
 }
 
 void voltar_menu(){
+    screenSetColor(YELLOW, BLACK);
     printf("Pressione 0 ou ENTER para voltar ao menu principal.\n");
     readch(); 
     while (keyhit()) {
@@ -134,6 +164,9 @@ void voltar_menu(){
     screenUpdate();
 }
 
+// typedef enum {BLACK, RED, GREEN, BROWN, BLUE, MAGENTA, CYAN, LIGHTGRAY,
+//         DARKGRAY, LIGHTRED, LIGHTGREEN, YELLOW, LIGHTBLUE, 
+//         LIGHTMAGENTA, LIGHTCYAN, WHITE} screenColor; 
 
 
 

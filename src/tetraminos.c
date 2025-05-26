@@ -222,10 +222,12 @@ int sortear_proxima_peca() {
 
 
 void exibir_prox_peca(int proxima_peca) {
+    screenSetColor(BLUE, BLACK);
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 12);
     printf("+---Proxima--+");
 
     for (int y = 0; y < 4; y++) {
+        screenSetColor(BLUE, BLACK);
         screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 13 + y);
         printf("|    ");
 
@@ -239,25 +241,30 @@ void exibir_prox_peca(int proxima_peca) {
                 printf(" ");
             }
         }
-
+        screenSetColor(BLUE, BLACK);
         printf("    |");
     }
 
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 17);
+    screenSetColor(BLUE, BLACK);
     printf("+------------+");
 }
 
 
 void exibir_linhas_removidas(int total_linhas_remov) {
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 8);
+    screenSetColor(BLUE, BLACK);
     printf("+---Linhas---+");
 
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 9);
+    screenSetColor(BLUE, BLACK);
     printf("|            |");
 
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 10);
+    screenSetColor(BLUE, BLACK);
     printf("+------------+");
 
     screenGotoxy(INICIO_X + LARGURA_JOGO + 9, INICIO_Y + 9);
+    screenSetColor(LIGHTRED, BLACK);
     printf("%4d", total_linhas_remov);
 }

@@ -113,12 +113,14 @@ void exibir_ranking() {
     int cont_jogadores;
     receber_dados_pontuacao(pontos, &cont_jogadores);
     
+    screenSetColor(LIGHTRED, BLACK);
     screenGotoxy(30, 9);
-    printf("RANKING\n");
+    printf("-+- RANKING -+-\n");
 
     if (cont_jogadores == 0) {
         screenGotoxy(26, 7);
-        printf("Nenhuma pontuacao disponivel.\n");
+        screenSetColor(LIGHTRED, BLACK);
+        printf("Nenhuma pontuacao disponivel =//\n");
     } 
     else {
         colocar_ordem_cresc(pontos, cont_jogadores);
@@ -128,9 +130,11 @@ void exibir_ranking() {
             screenGotoxy(24, 11 + i);
             
             if (i == 0) {
+                screenSetColor(LIGHTGREEN, BLACK);
                 printf("%d. ★ %s- %d pontos", i+1, pontos[i].nome, pontos[i].pontuacao);
             } 
             else {
+                screenSetColor(LIGHTGRAY, BLACK);
                 printf("%d. %s- %d pontos", i+1, pontos[i].nome, pontos[i].pontuacao);
             }
         }
@@ -157,15 +161,20 @@ void colocar_ordem_cresc(Jogador pontos[], int qtd_dados){
 }
 
 void exibir_pontuacao(int *pontuacao){
+
+    screenSetColor(BLUE, BLACK);
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 0);
     printf("+---Pontos---+");
 
+    screenSetColor(BLUE, BLACK);
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 1);
     printf("|            |");
 
+    screenSetColor(BLUE, BLACK);
     screenGotoxy(INICIO_X + LARGURA_JOGO + 6, INICIO_Y + 2);
     printf("+------------+");
 
+    screenSetColor(LIGHTRED, BLACK);
     screenGotoxy(INICIO_X + LARGURA_JOGO + 9, INICIO_Y + 1);
     printf("%4d", *pontuacao);
 }
