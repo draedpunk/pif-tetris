@@ -114,8 +114,8 @@ void exibir_ranking() {
     receber_dados_pontuacao(pontos, &cont_jogadores);
     
     screenSetColor(LIGHTRED, BLACK);
-    screenGotoxy(30, 9);
-    printf("-+- RANKING -+-\n");
+    screenGotoxy(26, 9);
+    printf("+-- RANKING --+\n");
 
     if (cont_jogadores == 0) {
         screenGotoxy(26, 7);
@@ -127,7 +127,7 @@ void exibir_ranking() {
         int maior_pontuacao = (cont_jogadores < TOP_MAIORES_PONT) ? cont_jogadores : TOP_MAIORES_PONT;
 
         for (int i = 0; i < maior_pontuacao; i++) {
-            screenGotoxy(24, 11 + i);
+            screenGotoxy(22, 11 + i);
             
             if (i == 0) {
                 screenSetColor(LIGHTGREEN, BLACK);

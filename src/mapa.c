@@ -65,7 +65,7 @@ void ler_mapa(MAPA *t) {
     for (int i = 0; i < t->linhas; i++) {
         for (int j = 0; j < t->colunas; j++) {
             t->matriz[i][j].caracter = temp[i][j];
-            t->matriz[i][j].cor = (temp[i][j] == ' ') ? DEFAULT_COLOR : RED;
+            t->matriz[i][j].cor = (temp[i][j] == ' ') ? DEFAULT_COLOR : LIGHTGRAY;
         }
     }
 }
