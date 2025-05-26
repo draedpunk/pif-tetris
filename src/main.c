@@ -108,6 +108,9 @@ int main() {
     char nome[30];
     MAPA t;
     int opcao;
+    
+    /* MUSICA DO TETRIS TAVA TRAVANDO MUITO */
+
     // comeca a musica do tetris em loop infinito
     // if (audio_ok && audio->musica_tetris != NULL) {
     //     Mix_PlayMusic(audio->musica_tetris, -1); 
