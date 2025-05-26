@@ -14,3 +14,4 @@ cu | 150
 cucucu | 100
 iko | 150
 k | 175
+kuku | 125

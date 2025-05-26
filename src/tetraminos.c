@@ -135,10 +135,25 @@ void desenhar_tetramino(int tipo, int rotacao, int px, int py) {
 
 int rotacionar(int x, int y, int rotacao) {
     switch (rotacao % 4) {
-        case 0: return y * 4 + x;         // 0 graus
-        case 1: return 12 + y - (x * 4);  // 90 graus
-        case 2: return 15 - (y * 4) - x;  // 180 graus
-        case 3: return 3 - y + (x * 4);   // 270 graus
+        case 0: // 0 graus           //  0  1  2  3
+            return y * 4 + x;       //  4  5  6  7
+                                    //  8  9 10 11
+                                    // 12 13 14 15
+
+        case 1: // 90 graus          // 12  8  4  0
+            return 12 + y - (x * 4); // 13  9  5  1
+                                     // 14 10  6  2
+                                     // 15 11  7  3
+
+        case 2: // 180 graus         // 15 14 13 12
+            return 15 - (y * 4) - x; // 11 10  9  8
+                                     //  7  6  5  4
+                                     //  3  2  1  0
+
+        case 3: // 270 graus         //  3  7 11 15
+            return 3 - y + (x * 4);  //  2  6 10 14
+                                     //  1  5  9 13
+                                     //  0  4  8 12
     }
     return 0;
 }
@@ -173,7 +188,7 @@ void explodir(MAPA* t, int cx, int cy) {
             int py = cy + y;
 
             if (px >= 0 && px < LARGURA_JOGO && py >= 0 && py < ALTURA_JOGO) {
-                // Não explode se for parede
+                // verfica se eh parede ou a base
                 if (t->matriz[py][px].caracter != PAREDE && t->matriz[py][px].caracter != BASE) {
                     t->matriz[py][px].caracter = ' ';
                     t->matriz[py][px].cor = RED;

@@ -109,10 +109,9 @@ int main() {
     MAPA t;
     int opcao;
     // comeca a musica do tetris em loop infinito
-    if (audio_ok && audio->musica_tetris != NULL) {
-        //Mix_VolumeMusic(64);  // Set moderate volume
-        Mix_PlayMusic(audio->musica_tetris, -1); 
-    }
+    // if (audio_ok && audio->musica_tetris != NULL) {
+    //     Mix_PlayMusic(audio->musica_tetris, -1); 
+    // }
 
     while (1) {
         dimensoes_tela_inicio_fim(); //tela menor
@@ -224,10 +223,10 @@ int main() {
                 free(t.matriz);
 
                 // chamada da musica tetris de novo apos o game over
-                if (audio_ok && audio->musica_tetris != NULL) {
-                    Mix_VolumeMusic(64);
-                    Mix_PlayMusic(audio->musica_tetris, -1);
-                }
+                // if (audio_ok && audio->musica_tetris != NULL) {
+                //     Mix_VolumeMusic(64);
+                //     Mix_PlayMusic(audio->musica_tetris, -1);
+                // }
                 break;
             }
 
