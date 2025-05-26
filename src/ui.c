@@ -94,7 +94,7 @@ void exibir_banner_titulo() {
 }
 
 void exibir_banner_gameover() {
-    screenInit(1);
+    //screenInit(1);
     dimensoes_tela_inicio_fim();
     banner_gameover();
     screenUpdate();
