@@ -55,7 +55,6 @@ int ler_opcao_menu() {
     return c;
 }
 
-
 int verificar_game_over(MAPA *t, int peca_atual, int rot, int x, int y) {
     return !pode_encaixar(t, peca_atual, rot, x, y);
 }
