@@ -27,8 +27,6 @@ typedef struct {
 
 void alocar_mapa(MAPA* t);
 void ler_mapa(MAPA *t);
-void imprimir_mapa(MAPA* t);
 void desenhar_mapa_com_peca(MAPA* t, int tetramino_atual, int rotacao_atual, int x_atual, int y_atual);
-void inicializar_mapa(MAPA *t);
 
 #endif

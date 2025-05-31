@@ -2,13 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <time.h>
 #include "screen.h"
 #include "keyboard.h"
-#include "timer.h"
-
-#include "tetris.h"
-#include "tetraminos.h"
+#include "mapa.h"
 
 void alocar_mapa(MAPA* t) {
     t->matriz = malloc(t->linhas * sizeof(Grade_jogo*));
@@ -17,7 +13,6 @@ void alocar_mapa(MAPA* t) {
         t->matriz[i] = malloc(t->colunas * sizeof(Grade_jogo));
         for (int j = 0; j < t->colunas; j++) {
             t->matriz[i][j].caracter = ' ';  
-            t->matriz[i][j].cor = MAGENTA; 
         }
     }
 }
@@ -34,28 +29,23 @@ void ler_mapa(MAPA *t) {
     int colunas = -1;
 
     char temp[TAMANHO_MAX_LINHAS][TAMANHO_MAX_COLUNAS];
-
     while (fgets(linha, sizeof(linha), f) != NULL) {
         linha[strcspn(linha, "\r\n")] = 0; 
         int len = strlen(linha);
-
         if (colunas == -1) colunas = len;
         if (len != colunas) {
             printf("Erro: mapa com colunas irregulares (linha %d).\n", linhas + 1);
             fclose(f);
             exit(1);
         }
-
         if (linhas >= TAMANHO_MAX_LINHAS) {
             printf("Erro: mapa excede o número máximo de linhas.\n");
             fclose(f);
             exit(1);
         }
-
         strcpy(temp[linhas], linha);
         linhas++;
     }
-
     fclose(f);
 
     t->linhas = linhas;
@@ -67,15 +57,6 @@ void ler_mapa(MAPA *t) {
             t->matriz[i][j].caracter = temp[i][j];
             t->matriz[i][j].cor = (temp[i][j] == ' ') ? DEFAULT_COLOR : LIGHTGRAY;
         }
-    }
-}
-
-void imprimir_mapa(MAPA* t) {
-    for (int i = 0; i < t->linhas; i++) {
-        for (int j = 0; j < t->colunas; j++) {
-            printf("%c", t->matriz[i][j].caracter); 
-        }
-        printf("\n");
     }
 }
 
@@ -102,13 +83,4 @@ void desenhar_mapa_com_peca(MAPA* t, int tetramino_atual, int rotacao_atual, int
         }
     }
     screenSetColor(WHITE, BLACK); 
-}
-
-void inicializar_mapa(MAPA *t) {
-    for (int y = 0; y < t->linhas; y++) {
-        for (int x = 0; x < t->colunas; x++) {
-            t->matriz[y][x].caracter = ' ';     
-            t->matriz[y][x].cor = DEFAULT_COLOR; 
-        }
-    }
 }

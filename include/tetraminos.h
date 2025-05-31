@@ -1,12 +1,10 @@
 #ifndef _TETRAMINOS_H_
 #define _TETRAMINOS_H_
 
-#include "screen.h"
-#include "tetris.h"
-#include "mapa.h"
-
 #define PAREDE '|'
 #define BASE '-'
+
+#include "mapa.h"
 
 typedef struct {
     char* forma;          
@@ -18,7 +16,6 @@ extern Tetramino tetraminos[9];
 
 void carregar_tetraminos();
 void posicionar_tetramino_no_mapa(MAPA *t, int tipo, int rot, int px, int py);
-void desenhar_tetramino(int tipo, int rotacao, int px, int py);
 int rotacionar(int x, int y, int rotacao);
 int pode_encaixar(MAPA* mapa, int tipo, int rot, int posX, int posY);
 void explodir(MAPA* t, int cx, int cy);

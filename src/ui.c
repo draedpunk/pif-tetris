@@ -1,15 +1,8 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
-#include <time.h>
 #include "screen.h"
-#include "timer.h"
 #include "keyboard.h"
-
-#include "tetris.h"
 #include "ui.h"
-#include "musica.h"
 
 void banner_titulo() {
     int largura_util = 68;

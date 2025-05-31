@@ -1,20 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
 #include <time.h>
 #include "screen.h"
-#include "keyboard.h"
-#include "timer.h"
-
 #include "tetraminos.h"
-#include "tetris.h"
 #include "mapa.h"
-
-Tetramino tetraminos[9];
-
-#include "tetraminos.h"
-#include "screen.h"
 
 Tetramino tetraminos[9];
 
@@ -119,19 +108,19 @@ void posicionar_tetramino_no_mapa(MAPA *t, int tipo, int rot, int px, int py) {
     }
 }
 
-void desenhar_tetramino(int tipo, int rotacao, int px, int py) {
-    screenSetColor(tetraminos[tipo].cor, BLACK);
-    for (int y = 0; y < 4; y++) {
-        for (int x = 0; x < 4; x++) {
-            int pi = rotacionar(x, y, rotacao);
-            if (tetraminos[tipo].forma[pi] != '.') {
-                screenGotoxy(px + x, py + y);
-                printf("%c", tetraminos[tipo].simbolo);
-            }
-        }
-    }
-    screenSetColor(WHITE, BLACK);
-}
+// void desenhar_tetramino(int tipo, int rotacao, int px, int py) {
+//     screenSetColor(tetraminos[tipo].cor, BLACK);
+//     for (int y = 0; y < 4; y++) {
+//         for (int x = 0; x < 4; x++) {
+//             int pi = rotacionar(x, y, rotacao);
+//             if (tetraminos[tipo].forma[pi] != '.') {
+//                 screenGotoxy(px + x, py + y);
+//                 printf("%c", tetraminos[tipo].simbolo);
+//             }
+//         }
+//     }
+//     screenSetColor(WHITE, BLACK);
+// }
 
 int rotacionar(int x, int y, int rotacao) {
     switch (rotacao % 4) {

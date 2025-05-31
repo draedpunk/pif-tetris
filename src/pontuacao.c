@@ -1,21 +1,17 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-
 #include "screen.h"
-#include "keyboard.h"
-#include "timer.h"
-#include "tetris.h"
-#include "tetraminos.h"
+//#include "tetris.h"
+//#include "tetraminos.h"
 #include "mapa.h"
 #include "pontuacao.h"
+
 #include "ui.h"
 
 // limite maximo de jogadores pro jogo 50
 // ranking vai mostrar no max as 5 maiores pontuacoes
 
 void atualizar_pontuacao(int *pontuacao, int linhas, int eh_explosiva) {
-
     if (eh_explosiva){
         *pontuacao -= 50; 
         if (*pontuacao < 0){
@@ -110,7 +106,6 @@ void receber_dados_pontuacao(Jogador pontos[], int *qtd_dados) {
 }
 
 void exibir_ranking() {
-    //dimensoes_tela_inicio_fim();
     Jogador pontos[LIMITE_JOGADORES];
     int cont_jogadores;
     receber_dados_pontuacao(pontos, &cont_jogadores);
@@ -143,7 +138,6 @@ void exibir_ranking() {
     }
 
     screenGotoxy(10, 13 + (cont_jogadores > 0 ? cont_jogadores : 1));
-    //voltar_menu();
 }
 
 
