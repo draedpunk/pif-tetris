@@ -6,7 +6,6 @@ TCHAIKOVSKY | 3125
 BACH | 1700
 OZZY | 850
 
-aa | 150
-ll | 200
-sss | 200
+LISZT | 4675
+dd | 150
 dd | 200

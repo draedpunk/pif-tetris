@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "screen.h"
+#include "keyboard.h"
 //#include "tetris.h"
 //#include "tetraminos.h"
 #include "mapa.h"
@@ -72,9 +73,11 @@ void input_nome_jogador(char *nome_jogador) {
     int inicio_y = 6;
 
     screenGotoxy(inicio_x + 2, inicio_y + 7);
-
     screenShowCursor();
+    // desativa raw
+    keyboardDestroy();  // modo canonico
     fgets(nome_jogador, 30, stdin);
+    keyboardInit();     // volta pro raw
 
     size_t len = strlen(nome_jogador);
     if (len > 0 && nome_jogador[len - 1] == '\n') {

@@ -64,7 +64,6 @@ void inicializar_jogo(MAPA* t) {
     ler_mapa(t);
     srand(time(NULL));
     carregar_tetraminos();
-    screenInit(1);
     dimensoes_tela_jogo();
     timerInit(500);
 }
@@ -162,6 +161,7 @@ int iniciar_jogo(char* nome, MAPA *t, Musica* audio, int audio_ok){
                     Mix_VolumeChunk(audio->som_nivel, 50);
                     Mix_PlayChannel(-1, audio->som_nivel, 0);
                 }
+                exibir_nivel(nivel_atual);
             }
             // att a pontuacao com base nas linhas eliminadas e nos pontos comidos pela peca explosiva
             atualizar_pontuacao(&pontuacao, linhas, (peca_atual == 8));
@@ -183,7 +183,6 @@ int iniciar_jogo(char* nome, MAPA *t, Musica* audio, int audio_ok){
 
                 screenGotoxy(INICIO_X, INICIO_Y + t->linhas / 2);
                 exibir_banner_gameover();
-                screenClear();
                             
             }
         }
@@ -195,7 +194,6 @@ int iniciar_jogo(char* nome, MAPA *t, Musica* audio, int audio_ok){
     }
     // perdeu!! salva a pontuacao do jogador beltrano e mata a tela
     salvar_pontuacao(nome, pontuacao);
-    screenDestroy();
 
     for (int i = 0; i < t->linhas; i++) { // libera a matriz
         free(t->matriz[i]);
@@ -207,53 +205,64 @@ int iniciar_jogo(char* nome, MAPA *t, Musica* audio, int audio_ok){
         Mix_VolumeMusic(64);
         Mix_PlayMusic(audio->musica_tetris, -1);
     }
-    //break;
+
     return 0;
 
 }
 
 int main() {
-    // inicializar os audios
-    int audio_ok;  // estado do audio
+    // inicializa teclado no modo raw (pra capturar tecla sem esperar ENTER)
+    keyboardInit();
+
+    int audio_ok;
     Musica *audio = inicializar_tudo_audio(&audio_ok);
 
-    // nome do joagdor e variavel da opcao do menu
     char nome[30];
     MAPA t;
     int opcao;
+    int rodando = 1;
 
-    /* MUSICA DO TETRIS TAVA TRAVANDO MUITO */
-    //comeca a musica do tetris em loop infinito
     if (audio_ok && audio->musica_tetris != NULL) {
         Mix_PlayMusic(audio->musica_tetris, -1); 
     }
 
-    while (1) {
-        dimensoes_tela_inicio_fim(); //tela menor
-        banner_titulo(); // mostra o menu
+
+    while (rodando) {
+        // inicializa tela, configura dimensões e limpa antes do menu
+        screenInit(1);
+        screenClear();
+        dimensoes_tela_inicio_fim();
+        exibir_banner_titulo();
+
+        // volta pro modo canônico pra digitar menu com ENTER
+        keyboardDestroy();
         screenHideCursor();
 
         opcao = ler_opcao_menu();
 
         switch (opcao) {
-            case '1': { // opcao [1] INICIAR JOGO
+            case '1': // iniciar jogo
+                // volta pro modo raw pra jogo captar tecla direto
+                keyboardInit();
+                screenClear();
+                //dimensoes_tela_inicio_fim();
                 iniciar_jogo(nome, &t, audio, audio_ok);
+                // depois do jogo, loop volta pro menu, então no começo do loop vai chamar keyboardDestroy() de novo
                 break;
-            }
 
-            case '2': { // opcao [2] RANKING
+            case '2': // ranking
                 screenClear();
                 dimensoes_tela_inicio_fim();
                 exibir_ranking();
                 screenGotoxy(14, 19);
-                voltar_menu(); 
+                voltar_menu();
                 break;
-            }
 
-            case '3': //opcao [3] SAIR
+            case '3': // sair
                 screenClear();
                 liberar_sons(audio);
-                return 0;
+                rodando = 0;
+                break;
 
             default:
                 screenClear();
@@ -262,5 +271,6 @@ int main() {
                 sleep(1);
         }
     }
+
     return 0;
 }

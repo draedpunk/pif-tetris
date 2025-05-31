@@ -78,21 +78,20 @@ void banner_gameover() {
 }
 
 void exibir_banner_titulo() {
-    screenInit(1);
+    keyboardDestroy();
+    screenInit(1);              
     dimensoes_tela_inicio_fim();
-    banner_titulo();
+    banner_titulo();             
     screenUpdate();
+
     sleep(3);
-    screenClear();
 }
 
+
 void exibir_banner_gameover() {
-    //screenInit(1);
     dimensoes_tela_inicio_fim();
     banner_gameover();
     screenUpdate();
-    // sleep(3);
-    // screenClear();
 }
 
 void bordas_personalizadas(int min_x, int max_x, int min_y,int max_y) {
@@ -147,16 +146,23 @@ void dimensoes_tela_jogo() {
 }
 
 void voltar_menu() {
+    keyboardDestroy(); 
+
     screenSetColor(YELLOW, BLACK);
     printf("Pressione 0 para voltar ao menu principal.\n");
     screenUpdate();
 
     int tecla;
     do {
-        tecla = readch();
-        //  ENTER (13)
-    } while (tecla != '0' && tecla != 13);
+        tecla = getchar();
+
+        while (getchar() != '\n'); // limpa o buffer
+
+    } while (tecla != '0');
+
+    keyboardInit(); // volta pro modo raw para continuar jogando ou o que for
 }
+
 
 
 
