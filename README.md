@@ -12,19 +12,36 @@ Programação Imperativa e Funcional - 2025.1
 ## 03. Instituição de Ensino
 CESAR School
 
-## 04 Mecânica do Jogo
+## 04. Mecânica do Jogo
 Tetris é um jogo clássico onde o jogador deve posicionar peças chamadas tetraminós que caem do topo da área jogável. Cada vez que uma linha é completamente preenchida, ela é eliminada e o jogador ganha pontos.
 Nesta versão em terminal, algumas peças ganharam uma funcionalidade especial: a capacidade de explodir blocos ao seu redor ao tocarem outras peças, tornando o jogo mais desafiador.
 
-## 05 Regras e Funcionamento
+## 05. Regras e Funcionamento
 - As peças caem uma de cada vez e podem ser movidas antes de tocar o fundo ou outras peças;
 - O controle é feito pelas teclas WASD;
 - Linhas completas são eliminadas e convertidas em pontos;
 - A velocidade das peças aumenta com o tempo ou com o progresso do jogador;
 - O jogo encerra quando não há mais espaço para novas peças.
 
-## 06 Controles
+## 06. Controles
 - W: girar a peça
 - A: mover para a esquerda
 - S: acelerar a queda
 - D: mover para a direita
+
+## 07. Requisitos e Execução
+
+Este jogo foi desenvolvido para sistemas baseados em Unix, como **Linux** e **macOS**, mas também pode ser executado no **Windows** utilizando o **WSL (windows subsystem for linux)**.
+
+### Requisitos:
+- Ambiente Linux, macOS ou Windows com WSL;
+- Compilador C (como `gcc`);
+- Utilitário `make` instalado.
+
+### Para compilar e executar o jogo:
+
+```bash
+make
+./build/tetris
+
+
