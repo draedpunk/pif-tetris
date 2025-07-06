@@ -19,7 +19,7 @@ Nesta versão em terminal, algumas peças ganharam uma funcionalidade especial: 
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/d84f1c2b-3d64-4749-8b22-9d7ceeaba754" />
-  <img src="https://github.com/user-attachments/assets/067fcf19-8368-4818-ae8c-651bb3fc5050" width="45%" />
+  <img src="https://github.com/user-attachments/assets/067fcf19-8368-4818-ae8c-651bb3fc5050" />
 </p>
 
 ## 05. Regras e Funcionamento 
