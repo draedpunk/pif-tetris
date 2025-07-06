@@ -19,7 +19,9 @@ CESAR School
 
 ## 04. Mecânica do Jogo
 Tetris é um jogo clássico onde o jogador deve posicionar peças chamadas tetraminós que caem do topo da área jogável. Cada vez que uma linha é completamente preenchida, ela é eliminada e o jogador ganha pontos.
+
 Nesta versão em terminal, algumas peças ganharam uma funcionalidade especial: a capacidade de explodir blocos ao redor, tornando o jogo mais desafiador. A peça explosiva é gerada aleatoriamente e pode tanto atrapalhar quanto ajudar em situações de pouco espaço.
+
 Além disso, o jogo conta com efeitos sonoros e a memorável música do tetris, proporcionando uma experiência mais imersiva e divertida, mesmo em interface de terminal.
 
 <p align="center">
