@@ -17,7 +17,10 @@ CESAR School
 Tetris é um jogo clássico onde o jogador deve posicionar peças chamadas tetraminós que caem do topo da área jogável. Cada vez que uma linha é completamente preenchida, ela é eliminada e o jogador ganha pontos.
 Nesta versão em terminal, algumas peças ganharam uma funcionalidade especial: a capacidade de explodir blocos ao seu redor ao tocarem outras peças, tornando o jogo mais desafiador.
 
-## 05. Regras e Funcionamento
+![jogotetris](https://github.com/user-attachments/assets/d84f1c2b-3d64-4749-8b22-9d7ceeaba754)
+
+## 05. Regras e Funcionamento 
+
 - As peças caem uma de cada vez e podem ser movidas antes de tocar o fundo ou outras peças;
 - O controle é feito pelas teclas WASD;
 - Linhas completas são eliminadas e convertidas em pontos;
