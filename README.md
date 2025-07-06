@@ -1,4 +1,5 @@
 # CLI-Tetris 🧩
+![menutetris](https://github.com/user-attachments/assets/9c4723d6-bbff-4756-bb81-7771849a2f73)
 
 ## 01. Membros do Projeto
 - Diego Xavier ([@elbedie](https://github.com/elbedie));
