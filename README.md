@@ -19,8 +19,8 @@ CESAR School
 
 ## 04. Mecânica do Jogo
 Tetris é um jogo clássico onde o jogador deve posicionar peças chamadas tetraminós que caem do topo da área jogável. Cada vez que uma linha é completamente preenchida, ela é eliminada e o jogador ganha pontos.
-
-Nesta versão em terminal, algumas peças ganharam uma funcionalidade especial: a capacidade de explodir blocos ao seu redor ao tocarem outras peças, tornando o jogo mais desafiador. Gerada aleatoriamente, a peça explosiva poderá dificultar ou também ajudar nos momentos em que o espaço da área jogável estiver menor.
+Nesta versão em terminal, algumas peças ganharam uma funcionalidade especial: a capacidade de explodir blocos ao redor, tornando o jogo mais desafiador. A peça explosiva é gerada aleatoriamente e pode tanto atrapalhar quanto ajudar em situações de pouco espaço.
+Além disso, o jogo conta com efeitos sonoros e a memorável música do tetris, proporcionando uma experiência mais imersiva e divertida, mesmo em interface de terminal.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/d84f1c2b-3d64-4749-8b22-9d7ceeaba754" width="45%"/>
@@ -56,6 +56,22 @@ Este jogo foi desenvolvido para sistemas baseados em Unix, como **Linux** e **ma
 - Ambiente Linux, macOS ou Windows com WSL
 - Compilador C (como `gcc`)
 - Utilitário `make` instalado
+- Bibliotecas de áudio SDL2 e SDL2_mixer instaladas (ex: `libsdl2-dev` e `libsdl2-mixer-dev` no Linux)
+
+### Dependências para áudio
+
+Para que a música funcione corretamente, é necessário instalar as bibliotecas SDL2 e SDL2_mixer no sistema.
+
+1. No Ubuntu/Debian:
+```bash
+sudo apt install libsdl2-dev libsdl2-mixer-dev
+```
+
+2. No macOS (Homebrew):
+```bash
+brew install sdl2 sdl2_mixer
+```
+**❗OBS.:** No Windows, recomenda-se utilizar o WSL com essas bibliotecas instaladas.
 
 ### Para compilar e executar o jogo:
 
