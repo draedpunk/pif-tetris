@@ -69,5 +69,5 @@ Este jogo foi desenvolvido para sistemas baseados em Unix, como **Linux** e **ma
    make
    ./build/tetris
     ```
-OBS.: Importante rodar no terminal Linux ou no WSL no caso de Windows.
+**❗OBS.:** Certifique-se de estar no terminal Linux ou no WSL no caso de Windows
    </details>
